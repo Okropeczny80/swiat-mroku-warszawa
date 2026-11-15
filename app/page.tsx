@@ -1,43 +1,35 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [session, setSession] = useState(false);
+  const [message, setMessage] = useState("Ładowanie archiwum…");
+  const [session, setSession] = useState<any>(null);
 
   useEffect(() => {
-    if (!supabase) return;
-    supabase.auth.getSession().then(({ data }) => setSession(Boolean(data.session)));
-    const { data } = supabase.auth.onAuthStateChange((_event, next) => setSession(Boolean(next)));
+    if (!supabase) { setMessage("Uzupełnij zmienne Supabase w ustawieniach projektu Vercel."); return; }
+    supabase.auth.getSession().then(({ data }) => { setSession(data.session); setMessage(""); });
+    const { data } = supabase.auth.onAuthStateChange((_event, next) => setSession(next));
     return () => data.subscription.unsubscribe();
   }, []);
 
-  async function signIn(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setMessage("");
-    if (!supabase) {
-      setMessage("Brak konfiguracji połączenia z bazą. Logowanie nie jest jeszcze aktywne.");
-      return;
-    }
-    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
-    if (error) setMessage(error.message);
+  async function signIn() {
+    if (!supabase) return;
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setMessage(error?.message ?? "Zalogowano.");
   }
+  async function signOut() { await supabase?.auth.signOut(); }
 
-  async function signOut() {
-    if (supabase) await supabase.auth.signOut();
-  }
-
-  return (
-    <main className="shell">
-      <header><span>AKTA TAJNE / WYDZIAŁ SPRAW NIETYPOWYCH</span><b>ARCHIWUM WARSZAWA ’97</b></header>
-      <section className="paper">
-        <div className="seal">MW</div>
-        <p className="eyebrow">WORLD OF DARKNESS · WARSZAWA</p>
-        <h1>ŚWIAT MROKU</h1>
-        <p className="year">1997</p>
-        {session ? (
-          <><h2>ARCHIWUM OTWARTEֻǱ˞
+  return <main className="shell">
+    <section className="panel">
+      <p className="eyebrow">ARCHIWUM • TAJNE • WARSZAWA</p>
+      <h1>ŚWIAT MROKU</h1><p className="year">1997</p>
+      {session ? <><h2>ARCHIWUM OTWARTE</h2><p>{session.user.email}</p><button onClick={signOut}>Wyloguj</button></> :
+        <><h2>DOSTĘP DO ARCHIWUM</h2><label>E-mail<input type="email" value={email} onChange={e=>setEmail(e.target.value)} /></label><label>Hasło<input type="password" value={password} onChange={e=>setPassword(e.target.value)} /></label><button onClick={signIn}>Zaloguj</button></>}
+      {message && <p className="message">{message}</p>}
+      <p className="foot">Nie każdy sekret powinien ujrzeć światło dzienne.</p>
+    </section>
+  </main>;
+}
