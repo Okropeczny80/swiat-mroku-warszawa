@@ -1,15 +1,49 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
 type Place = { id: string; name: string; latitude: number | null; longitude: number | null; address?: string | null; district?: string | null; location_categories?: { color?: string | null; name?: string | null } | null };
 type Route = GeoJSON.LineString | null;
 export default function MapView({ locations, selectedId, route, onSelect }: { locations: Place[]; selectedId: string | null; route: Route; onSelect: (p: Place) => void }) {
   const host = useRef<HTMLDivElement>(null), map = useRef<maplibregl.Map | null>(null);
   const markers = useRef<maplibregl.Marker[]>([]), select = useRef(onSelect), didInitialFit = useRef(false);
+  const [mapError, setMapError] = useState("");
   useEffect(() => { select.current = onSelect; }, [onSelect]);
   useEffect(() => {
     if (!host.current || map.current) return;
-    const m = new maplibregl.Map({ container: host.current, style: "https://demotiles.maplibre.org/style.json", center: [21.0122, 52.2297], zoom: 11, attributionControl: {} });
+    setMapError("");
+    const mapStyle: maplibregl.StyleSpecification = {
+      version: 8,
+      sources: {
+        osm: {
+          type: "raster",
+          tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+          tileSize: 256,
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+        }
+      },
+      layers: [
+        { id: "background", type: "background", paint: { "background-color": "#17191a" } },
+        {
+          id: "osm-raster",
+          type: "raster",
+          source: "osm",
+          paint: {
+            "raster-saturation": -0.78,
+            "raster-contrast": 0.12,
+            "raster-brightness-min": 0.12,
+            "raster-brightness-max": 0.72,
+            "raster-fade-duration": 0
+          }
+        }
+      ]
+    };
+    const m = new maplibregl.Map({ container: host.current, style: mapStyle, center: [21.0122, 52.2297], zoom: 11, attributionControl: { compact: true } });
+    m.on("error", (event) => {
+      const message = event.error?.message || "Nie udało się pobrać danych mapy.";
+      console.error("MapLibre error:", event.error || event);
+      if (message.toLowerCase().includes("tile") || message.toLowerCase().includes("source")) setMapError("Nie udało się pobrać kafelków mapy. Sprawdź połączenie i odśwież stronę.");
+    });
+    m.once("load", () => setMapError(""));
     m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     m.addControl(new maplibregl.ScaleControl({ maxWidth: 120, unit: "metric" }), "bottom-right");
     map.current = m;
@@ -48,5 +82,5 @@ export default function MapView({ locations, selectedId, route, onSelect }: { lo
     };
     if (m.isStyleLoaded()) apply(); else m.once("load", apply);
   }, [route]);
-  return <div className="map-wrap"><div ref={host} className="map-canvas" /><div className="map-legend"><span><i /> LOKALIZACJE</span><span><i className="route-key" /> TRASA</span></div><div className="map-credit">MAPA WSPÓŁCZESNA · DANE GEOGRAFICZNE NIE ODWZOROWUJĄ STANU Z 1997 R.</div></div>;
+  return <div className="map-wrap"><div ref={host} className="map-canvas" />{mapError && <div className="map-error" role="status">{mapError}</div>}<div className="map-legend"><span><i /> LOKALIZACJE</span><span><i className="route-key" /> TRASA</span></div><div className="map-credit">MAPA WSPÓŁCZESNA · DANE GEOGRAFICZNE NIE ODWZOROWUJĄ STANU Z 1997 R.</div></div>;
 }
