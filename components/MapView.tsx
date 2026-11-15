@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
 type Place = { id: string; name: string; latitude: number | null; longitude: number | null; address?: string | null; district?: string | null; location_categories?: { color?: string | null; name?: string | null } | null };
 type Route = GeoJSON.LineString | null;
-export default function MapView({ locations, selectedId, route, onSelect }: { locations: Place[]; selectedId: string | null; route: Route; onSelect: (p: Place) => void }) {
+export default function MapView({ locations, selectedId, route, onSelect, placing, onMapClick }: { locations: Place[]; selectedId: string | null; route: Route; onSelect: (p: Place) => void; placing: boolean; onMapClick: (latitude: number, longitude: number) => void }) {
   const host = useRef<HTMLDivElement>(null), map = useRef<maplibregl.Map | null>(null);
   const markers = useRef<maplibregl.Marker[]>([]), select = useRef(onSelect), didInitialFit = useRef(false);
   const [mapError, setMapError] = useState("");
@@ -49,6 +49,13 @@ export default function MapView({ locations, selectedId, route, onSelect }: { lo
     map.current = m;
     return () => { markers.current.forEach(x => x.remove()); m.remove(); map.current = null; };
   }, []);
+  useEffect(() => {
+    const m = map.current; if (!m) return;
+    const handleClick = (event: maplibregl.MapMouseEvent) => { if (placing) onMapClick(event.lngLat.lat, event.lngLat.lng); };
+    m.getCanvas().style.cursor = placing ? "crosshair" : "";
+    if (placing) m.on("click", handleClick);
+    return () => { m.off("click", handleClick); m.getCanvas().style.cursor = ""; };
+  }, [placing, onMapClick]);
   useEffect(() => {
     const m = map.current; if (!m) return;
     markers.current.forEach(x => x.remove()); markers.current = [];
