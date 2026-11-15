@@ -9,7 +9,7 @@ export default function MapView({ locations, selectedId, route, onSelect }: { lo
   useEffect(() => { select.current = onSelect; }, [onSelect]);
   useEffect(() => {
     if (!host.current || map.current) return;
-    const m = new maplibregl.Map({ container: host.current, style: "https://demotiles.maplibre.org/style.json", center: [21.0122, 52.2297], zoom: 11, attributionControl: true });
+    const m = new maplibregl.Map({ container: host.current, style: "https://demotiles.maplibre.org/style.json", center: [21.0122, 52.2297], zoom: 11, attributionControl: {} });
     m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     m.addControl(new maplibregl.ScaleControl({ maxWidth: 120, unit: "metric" }), "bottom-right");
     map.current = m;
