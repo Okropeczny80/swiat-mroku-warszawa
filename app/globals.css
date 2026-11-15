@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+:root{color-scheme:dark;--bg:#090b0b;--panel:#151817;--line:#403a30;--gold:#b99a69;--paper:#ddd2bc;--muted:#999080;--red:#71323e}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--paper)}
+body{font-family:'Cormorant Garamond',serif}
+button,input{font:inherit}
+button{cursor:pointer}
+.shell{min-height:100vh;display:flex;flex-direction:column}
+header{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line);background:#100e0d;font:10px 'IBM Plex Mono',monospace;letter-spacing:1px;color:var(--gold)}
+header b{font-weight:500}
+.paper{width:min(440px,calc(100% - 32px));margin:auto;padding:38px 42px 32px;text-align:center;background:var(--panel);border:1px solid var(--line);box-shadow:0 22px 80px #0008}
+.seal{width:54px;height:54px;margin:0 auto 22px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:20px}
+.eyebrow,small,footer,label{font:10px 'IBM Plex Mono',monospace;letter-spacing:1.4px;color:var(--muted)}
+h1{font-size:42px;letter-spacing:3px;font-weight:500;margin:12px 0 0;color:var(--paper)}
+.year{font:12px 'IBM Plex Mono',monospace;letter-spacing:5px;color:var(--gold);margin:6px 0 26px}
+h2{font-size:17px;font-weight:500;letter-spacing:1.5px;margin:22px 0}
+form{text-aligֻǱ˞
