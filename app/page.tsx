@@ -156,7 +156,7 @@ export default function Home() {
             <section className="secret-section"><small>◈ TAJNE / NOTATKI MG</small><p>{selected.gm_notes || "Brak poufnych notatek."}</p></section>
             <div className="detail-actions"><button onClick={editLocation}>EDYTUJ KARTĘ</button><button onClick={softDelete}>PRZENIEŚ DO KOSZA</button></div>
           </div>
-        </div> : <div className="empty-detail"><div className="empty-mark">⌖</div><h3>Nie wybrano lokalizacji</h3><p>Wybierz punkt na mapie lub pozycję z listy po lewej stronie, aby otworzyć kartę miejsca.</p><button onClick={newLocation}>＋ DODAJ PIERWSZE MIEJSCE</button></div>}
+        </div> : <div className="empty-detail"><div className="empty-mark">⌖</div><h3>Nie wybrano lokalizacji</h3><p>Wybierz punkt na mapie lub pozycję z listy po lewej stronie, aby otworzyć kartę miejsca.</p><button onClick={() => newLocation()}>＋ DODAJ PIERWSZE MIEJSCE</button></div>}
       </aside>}
     </div>
     {message && <div className="toast">{message}<button onClick={() => setMessage("")}>×</button></div>}
