@@ -139,7 +139,7 @@ export default function Home() {
       {!leftOpen && <button className="reopen left-reopen" onClick={() => setLeftOpen(true)}>› LOKALIZACJE</button>}
       <section className="map-stage">
         <div className="map-title"><span>WARSZAWA / POLSKA</span><b>PLAN MIASTA · WIDOK OPERACYJNY</b><span>1997</span></div>
-        <MapView locations={filteredLocations} selectedId={selected?.id || null} route={route?.geometry || null} onSelect={setSelected} />
+        <MapView locations={filteredLocations} selectedId={selected?.id || null} route={route?.geometry || null} onSelect={p => setSelected(p as Location)} />
         {loading && <div className="map-loading">SYNCHRONIZACJA DANYCH…</div>}
         {!rightOpen && <button className="reopen right-reopen" onClick={() => setRightOpen(true)}>KARTA MIEJSCA ‹</button>}
       </section>
