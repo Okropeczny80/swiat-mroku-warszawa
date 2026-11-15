@@ -94,8 +94,8 @@ export default function Home() {
     if (!a || !b || a.longitude == null || a.latitude == null || b.longitude == null || b.latitude == null) { setMessage("Oba miejsca muszą mieć współrzędne."); return; }
     setRouting(true); setRoute(null);
     try {
-      const profile = mode === "walking" ? "foot" : "driving";
-      const res = await fetch("https://router.project-osrm.org/route/v1/" + profile + "/" + a.longitude + "," + a.latitude + ";" + b.longitude + "," + b.latitude + "?overview=full&geometries=geojson");
+      const router = mode === "walking" ? "routed-foot" : "routed-car";
+      const res = await fetch("https://routing.openstreetmap.de/" + router + "/route/v1/driving/" + a.longitude + "," + a.latitude + ";" + b.longitude + "," + b.latitude + "?overview=full&geometries=geojson");
       const json = await res.json();
       if (!res.ok || json.code !== "Ok" || !json.routes?.length) throw new Error("Nie udało się wyznaczyć trasy dla wybranego środka transportu.");
       const r = json.routes[0]; setRoute({ geometry: r.geometry, distance: r.distance, duration: r.duration });
