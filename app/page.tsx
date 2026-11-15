@@ -25,6 +25,7 @@ export default function Home() {
   const [message, setMessage] = useState(""), [loading, setLoading] = useState(false);
   const [leftOpen, setLeftOpen] = useState(true), [rightOpen, setRightOpen] = useState(true);
   const [editor, setEditor] = useState(false), [form, setForm] = useState<any>(emptyLocation), [saving, setSaving] = useState(false);
+  const [placing, setPlacing] = useState(false);
   const [origin, setOrigin] = useState(""), [destination, setDestination] = useState(""), [mode, setMode] = useState<"driving" | "walking">("driving"), [route, setRoute] = useState<RouteResult>(null), [routing, setRouting] = useState(false);
 
   useEffect(() => {
@@ -66,7 +67,8 @@ export default function Home() {
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     if (error) setMessage(error.message);
   }
-  function newLocation() { setForm({ ...emptyLocation, category_id: categories[0]?.id || "" }); setEditor(true); }
+  function newLocation(coords?: { latitude: number; longitude: number }) { setPlacing(false); setForm({ ...emptyLocation, category_id: categories[0]?.id || "", latitude: coords?.latitude.toFixed(6) || "", longitude: coords?.longitude.toFixed(6) || "" }); setEditor(true); }
+  const handleMapClick = useCallback((latitude: number, longitude: number) => { newLocation({ latitude, longitude }); setMessage("Ustawiono współrzędne nowej lokalizacji. Uzupełnij kartę i zapisz."); }, [categories]);
   function editLocation() {
     if (!selected) return;
     setForm({ ...selected, latitude: selected.latitude ?? "", longitude: selected.longitude ?? "", category_id: selected.category_id || "" });
@@ -138,8 +140,9 @@ export default function Home() {
       </aside>}
       {!leftOpen && <button className="reopen left-reopen" onClick={() => setLeftOpen(true)}>› LOKALIZACJE</button>}
       <section className="map-stage">
-        <div className="map-title"><span>WARSZAWA / POLSKA</span><b>PLAN MIASTA · WIDOK OPERACYJNY</b><span>1997</span></div>
-        <MapView locations={filteredLocations} selectedId={selected?.id || null} route={route?.geometry || null} onSelect={p => setSelected(p as Location)} />
+        <div className="map-title"><span>WARSZAWA / POLSKA</span><b>PLAN MIASTA · WIDOK OPERACYJNY</b><button type="button" className={"map-place-toggle" + (placing ? " active" : "")} onClick={() => { setPlacing(v => !v); setMessage(placing ? "Anulowano dodawanie punktu." : "Tryb dodawania: kliknij wybrane miejsce na mapie."); }}>{placing ? "ANULUJ DODAWANIE ×" : "＋ DODAJ PUNKT"}</button><span>1997</span></div>
+        {placing && <div className="map-placement-hint">TRYB DODAWANIA · KLIKNIJ NA MAPIE, ABY USTAWIĆ ZNACZNIK</div>}
+        <MapView locations={filteredLocations} selectedId={selected?.id || null} route={route?.geometry || null} onSelect={p => setSelected(p as Location)} placing={placing} onMapClick={handleMapClick} />
         {loading && <div className="map-loading">SYNCHRONIZACJA DANYCH…</div>}
         {!rightOpen && <button className="reopen right-reopen" onClick={() => setRightOpen(true)}>KARTA MIEJSCA ‹</button>}
       </section>
