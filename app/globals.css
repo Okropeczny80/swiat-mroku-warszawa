@@ -2,16 +2,18 @@
 :root{color-scheme:dark;--bg:#090b0b;--panel:#151817;--line:#403a30;--gold:#b99a69;--paper:#ddd2bc;--muted:#999080;--red:#71323e}
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;background:var(--bg);color:var(--paper)}
-body{font-family:'Cormorant Garamond',serif}
-button,input{font:inherit}
-button{cursor:pointer}
-.shell{min-height:100vh;display:flex;flex-direction:column}
-header{height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line);background:#100e0d;font:10px 'IBM Plex Mono',monospace;letter-spacing:1px;color:var(--gold)}
-header b{font-weight:500}
-.paper{width:min(440px,calc(100% - 32px));margin:auto;padding:38px 42px 32px;text-align:center;background:var(--panel);border:1px solid var(--line);box-shadow:0 22px 80px #0008}
-.seal{width:54px;height:54px;margin:0 auto 22px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-size:20px}
-.eyebrow,small,footer,label{font:10px 'IBM Plex Mono',monospace;letter-spacing:1.4px;color:var(--muted)}
-h1{font-size:42px;letter-spacing:3px;font-weight:500;margin:12px 0 0;color:var(--paper)}
+body{font-family:'Cormorant Garamond',serif;background:radial-gradient(ellipse at 50% 20%,#202321 0%,#090b0b 65%)}
+.shell{min-height:100vh;display:grid;place-items:center;padding:28px}
+.panel{width:min(100%,480px);padding:48px 42px;border:1px solid var(--line);background:linear-gradient(145deg,rgba(25,29,27,.97),rgba(12,15,14,.98));box-shadow:0 24px 90px #0009;text-align:center;position:relative}
+.panel:before,.panel:after{content:"";position:absolute;inset:9px;border:1px solid #b99a6925;pointer-events:none}
+.eyebrow,.foot,.message{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--muted)}
+h1{font-size:clamp(34px,8vw,52px);font-weight:500;letter-spacing:5px;margin:22px 0 0;color:var(--paper)}
 .year{font:12px 'IBM Plex Mono',monospace;letter-spacing:5px;color:var(--gold);margin:6px 0 26px}
 h2{font-size:17px;font-weight:500;letter-spacing:1.5px;margin:22px 0}
-form{text-aligֻǱ˞
+label{display:block;text-align:left;font:10px 'IBM Plex Mono',monospace;letter-spacing:1px;color:var(--muted);margin:16px 0}
+input{display:block;width:100%;margin-top:8px;padding:12px 13px;background:#090b0b;border:1px solid var(--line);color:var(--paper);font:14px 'IBM Plex Mono',monospace;outline:none}
+input:focus{border-color:var(--gold)}
+button{margin-top:18px;padding:12px 25px;background:transparent;border:1px solid var(--gold);color:var(--gold);font:11px 'IBM Plex Mono',monospace;letter-spacing:2px;cursor:pointer}
+button:hover{background:#b99a6918}
+.message{margin-top:20px;letter-spacing:.3px}
+.foot{margin-top:40px;font-style:italic;letter-spacing:.5px}
