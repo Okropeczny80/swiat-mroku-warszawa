@@ -177,3 +177,10 @@
 .login-shell{font-family:'IBM Plex Sans',Arial,sans-serif}
 .login-paper h1,.login-paper h2{font-family:'Cormorant Garamond',Georgia,serif}
 .login-paper label,.login-paper input,.login-paper button{font-family:'IBM Plex Sans',Arial,sans-serif}
+
+.map-title{pointer-events:none}
+.map-title .map-place-toggle{pointer-events:auto;cursor:pointer;padding:7px 10px;background:#242528;border:1px solid #8d8981;color:#eeeae2;font:9px 'IBM Plex Mono',monospace;letter-spacing:.7px}
+.map-title .map-place-toggle:hover,.map-title .map-place-toggle.active{background:#343538;border-color:#d0ccc3}
+.map-placement-hint{position:absolute;z-index:4;top:58px;left:50%;transform:translateX(-50%);padding:9px 13px;background:#17181beF;border:1px solid #8d8981;color:#eeeae2;font:9px 'IBM Plex Mono',monospace;letter-spacing:.7px;pointer-events:none;white-space:nowrap}
+.map-app:has(.map-placement-hint) .map-canvas{cursor:crosshair}
+@media(max-width:620px){.map-title .map-place-toggle{font-size:7px;padding:6px}.map-placement-hint{max-width:90%;white-space:normal;text-align:center;top:54px}}
