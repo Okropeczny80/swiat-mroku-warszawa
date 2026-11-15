@@ -136,7 +136,7 @@ export default function Home() {
           })}</div>
           <div className="place-list">{filteredLocations.map(l => <button key={l.id} className={"place-row " + (selected?.id === l.id ? "chosen" : "")} onClick={() => setSelected(l)}><i style={{ background: l.location_categories?.color || "#a98c62" }} /><span><b>{l.name}</b><small>{l.district || l.address || "Warszawa"}</small></span><em>›</em></button>)}</div>
         </section>
-        <button className="add-location" onClick={newLocation}>＋ DODAJ LOKALIZACJĘ</button>
+        <button className="add-location" onClick={() => newLocation()}>＋ DODAJ LOKALIZACJĘ</button>
       </aside>}
       {!leftOpen && <button className="reopen left-reopen" onClick={() => setLeftOpen(true)}>› LOKALIZACJE</button>}
       <section className="map-stage">
