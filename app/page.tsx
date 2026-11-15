@@ -178,3 +178,5 @@ export default function Home() {
     </form></div>}
   </main>;
 }
+
+// Trigger production build after reconnecting the Vercel Git integration.
