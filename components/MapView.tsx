@@ -1,7 +1,7 @@
 "use client";
 import {useEffect,useRef} from "react";
 import maplibregl from "maplibre-gl";
-type Place={id:string;name:string;category:string;district?:string|null;address?:string|null;latitude?:number|null;longitude?:number|null};
+type Place=any;
 export default function MapView({locations,onSelect}:{locations:Place[];onSelect:(p:Place)=>void}){
  const host=useRef<HTMLDivElement>(null),map=useRef<maplibregl.Map|null>(null),markers=useRef<maplibregl.Marker[]>([]),select=useRef(onSelect);
  useEffect(()=>{select.current=onSelect},[onSelect]);
