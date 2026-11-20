@@ -11,32 +11,7 @@ export default function MapView({ locations, selectedId, route, onSelect, placin
   useEffect(() => {
     if (!host.current || map.current) return;
     setMapError("");
-    const mapStyle: maplibregl.StyleSpecification = {
-      version: 8,
-      sources: {
-        osm: {
-          type: "raster",
-          tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-          tileSize: 256,
-          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
-        }
-      },
-      layers: [
-        { id: "background", type: "background", paint: { "background-color": "#17191a" } },
-        {
-          id: "osm-raster",
-          type: "raster",
-          source: "osm",
-          paint: {
-            "raster-saturation": -0.92,
-            "raster-contrast": 0.18,
-            "raster-brightness-min": 0.035,
-            "raster-brightness-max": 0.40,
-            "raster-fade-duration": 0
-          }
-        }
-      ]
-    };
+    const mapStyle = "https://tiles.openfreemap.org/styles/dark";
     const m = new maplibregl.Map({ container: host.current, style: mapStyle, center: [21.0122, 52.2297], zoom: 11, attributionControl: { compact: true } });
     m.on("error", (event) => {
       const message = event.error?.message || "Nie udało się pobrać danych mapy.";

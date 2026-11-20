@@ -54,3 +54,12 @@ W chwili ostatniego przeglądu GitHub zwracał `main` oraz dodatkową gałąź `
 - Tymczasowy znak „97” zastąpiono samą nazwą projektu. Logo pozostaje decyzją otwartą.
 - Rozróżniono akcje: „Wskaż punkt na mapie” uruchamia wskazywanie współrzędnych na mapie; „Nowa lokalizacja · formularz” otwiera formularz wpisu.
 - Zachowano MapLibre, OSM, znaczniki, trasowanie, edycję i soft-delete. Nie zmieniano bazy Supabase ani polityk RLS.
+
+
+## Podkład mapy — zatwierdzony kierunek Dark
+
+- Użytkownik zatwierdził trzecią referencję: ciemny podkład z wyraźną hierarchią ulic i czytelnymi etykietami.
+- Podkład MapLibre przełączono z filtrowanych kafelków rastrowych OSM na wektorowy styl Dark od OpenFreeMap: `https://tiles.openfreemap.org/styles/dark`.
+- MapLibre pozostaje silnikiem mapy; istniejące znaczniki, ich wybór, wskazywanie punktu, trasy i skala pozostają obsługiwane.
+- OpenFreeMap deklaruje publiczny serwis bez klucza API i automatyczne dodawanie atrybucji przez MapLibre. Dane mapowe pochodzą z OpenStreetMap.
+- Styl Dark ma być punktem wyjścia do dalszego dopasowania; ewentualne indywidualne kolory warstw wymagają osobnej korekty stylu.
