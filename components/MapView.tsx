@@ -11,7 +11,7 @@ export default function MapView({ locations, selectedId, route, onSelect, placin
   useEffect(() => {
     if (!host.current || map.current) return;
     setMapError("");
-    const mapStyle = "https://tiles.openfreemap.org/styles/fiord";
+    const mapStyle = "https://tiles.openfreemap.org/styles/dark";
     const m = new maplibregl.Map({ container: host.current, style: mapStyle, center: [21.0122, 52.2297], zoom: 11, attributionControl: { compact: true } });
     m.on("error", (event) => {
       const message = event.error?.message || "Nie udało się pobrać danych mapy.";

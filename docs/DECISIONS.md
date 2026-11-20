@@ -71,3 +71,12 @@ W chwili ostatniego przeglądu GitHub zwracał `main` oraz dodatkową gałąź `
 - Podkład zmieniono na OpenFreeMap Fiord, czyli alternatywny ciemny styl o chłodniejszej, łagodniejszej palecie.
 - Celem jest zachowanie ciemnego charakteru mapy przy zwiększeniu rozróżnienia dróg, terenów i opisów.
 - Znaczniki, trasy, interakcje MapLibre i dane aplikacji pozostają bez zmian.
+
+
+## Wybór podkładu — OpenFreeMap Dark
+
+- Użytkownik wybrał styl Dark z galerii stylów MapLibre/OpenFreeMap.
+- Aktywny URL stylu: `https://tiles.openfreemap.org/styles/dark`.
+- To darmowy, gotowy styl OpenFreeMap niewymagający klucza API według katalogu Make with MapLibre i instrukcji OpenFreeMap.
+- MapLibre pozostaje silnikiem; znaczniki, trasy i dane aplikacji pozostają bez zmian.
+- Poprzedni wariant Fiord został zastąpiony na życzenie użytkownika.
