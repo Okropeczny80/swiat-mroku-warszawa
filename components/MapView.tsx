@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
-type Place = { id: string; name: string; latitude: number | null; longitude: number | null; address?: string | null; district?: string | null; location_categories?: { color?: string | null; name?: string | null } | null };
+type Place = { id: string; name: string; latitude: number | null; longitude: number | null; address?: string | null; district?: string | null; marker_icon?: string | null; location_categories?: { color?: string | null; name?: string | null } | null };
 type Route = GeoJSON.LineString | null;
 export default function MapView({ locations, selectedId, route, onSelect, placing, onMapClick }: { locations: Place[]; selectedId: string | null; route: Route; onSelect: (p: Place) => void; placing: boolean; onMapClick: (latitude: number, longitude: number) => void }) {
   const host = useRef<HTMLDivElement>(null), map = useRef<maplibregl.Map | null>(null);
@@ -53,7 +53,20 @@ export default function MapView({ locations, selectedId, route, onSelect, placin
       if (typeof p.latitude !== "number" || typeof p.longitude !== "number") return;
       const el = document.createElement("button");
       el.type = "button"; el.className = "map-marker" + (p.id === selectedId ? " selected" : "");
-      el.style.setProperty("--marker-color", p.location_categories?.color || "#b99a69");
+      el.style.setProperty("--marker-color", p.location_categories?.color || "#8b8b8b");
+      if (p.marker_icon) {
+        const icon = document.createElement("img");
+        icon.src = "/markers/" + p.marker_icon + ".svg";
+        icon.alt = "";
+        icon.setAttribute("aria-hidden", "true");
+        el.appendChild(icon);
+      } else {
+        const fallback = document.createElement("span");
+        fallback.className = "map-marker-fallback";
+        fallback.textContent = "⌖";
+        fallback.setAttribute("aria-hidden", "true");
+        el.appendChild(fallback);
+      }
       el.title = p.name; el.setAttribute("aria-label", "Otwórz lokalizację: " + p.name);
       const marker = new maplibregl.Marker({ element: el, anchor: "center" }).setLngLat([p.longitude, p.latitude])
         .setPopup(new maplibregl.Popup({ offset: 18 }).setText([p.name, p.district, p.address].filter(Boolean).join(" · "))).addTo(m);

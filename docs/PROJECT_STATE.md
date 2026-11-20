@@ -63,3 +63,12 @@ Wniosek: przeglądarka dociera do właściwego Supabase i wywołuje właściwy e
 2. Zweryfikować produkcyjne wdrożenie, gdy dostęp do Vercel będzie możliwy.
 3. Przygotować audytowalny baseline migracyjny z rzeczywistego schematu.
 4. Kontynuować rozwój od dokończenia modułu mapy zgodnie z Biblią v1.0.
+
+
+
+## Biblioteka znaczników lokalizacji — prace 2026-11-21
+- Dodano opcjonalne pole `locations.marker_icon`; NULL zachowuje domyślny znacznik.
+- Formularz lokalizacji pozwala wybrać jedną z siedmiu ikon SVG Repo lub wariant automatyczny.
+- Ikona jest niezależna od kategorii; kolor obrysu nadal pochodzi z kategorii.
+- Wybór ikony jest zapisywany w rekordzie lokalizacji i renderowany na mapie.
+- Biblioteka pozostaje rozszerzalna; metadane źródła/licencji wymagają uzupełnienia na podstawie konkretnych stron ikon.

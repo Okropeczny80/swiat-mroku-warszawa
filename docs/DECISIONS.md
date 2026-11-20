@@ -88,3 +88,12 @@ W chwili ostatniego przeglądu GitHub zwracał `main` oraz dodatkową gałąź `
 - Po załadowaniu stylu warstwy symboli zawierające tekst otrzymują kolor `#D8D4CC`, ciemne halo `#17191D` o szerokości 1.15 oraz pełną nieprzezroczystość.
 - Zmiana dotyczy wyłącznie napisów; nie zmienia kolorów podkładu, znaczników, tras ani danych.
 - Należy zweryfikować czytelność przy kilku poziomach powiększenia.
+
+
+
+## Znaczniki lokalizacji — 2026-11-21
+- Zatwierdzono pierwsze siedem ikon przekazanych przez użytkownika: sąd/instytucja, odznaka policyjna, budynek mieszkalny, symbol przestępstwa, pentakl, klub i most.
+- Każda lokalizacja może otrzymać własną ikonę niezależnie od kategorii.
+- NULL w `locations.marker_icon` oznacza wariant automatyczny i zachowuje zgodność ze starszymi rekordami.
+- Sylwetka znacznika pozostaje jednolita; ikona jest jasna, obrys zachowuje kolor kategorii, zaznaczenie ma burgundową poświatę.
+- Źródło: SVG Repo, pliki dostarczone przez użytkownika. Dokładne adresy kart i licencje poszczególnych plików pozostają do odnotowania przed publicznym rozpowszechnianiem.
