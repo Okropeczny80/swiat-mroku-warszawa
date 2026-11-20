@@ -11,6 +11,7 @@ type Location = {
   campaign_period: string | null; description: string | null; gm_notes: string | null; marker_icon: string | null;
   location_categories?: Category | null;
 };
+type LocationPhoto = { id: string; location_id: string; storage_path: string; caption: string | null; source: string | null; rights_note: string | null; is_primary: boolean; sort_order: number };
 type RouteResult = { geometry: GeoJSON.LineString; distance: number; duration: number } | null;
 const MARKER_ICONS = [
   { key: "places-court", label: "Miejsca publiczne", file: "/markers/places-court.svg" },
@@ -35,6 +36,14 @@ export default function Home() {
   const [leftOpen, setLeftOpen] = useState(true), [rightOpen, setRightOpen] = useState(true), [textLarge, setTextLarge] = useState(false);
   const [editor, setEditor] = useState(false), [form, setForm] = useState<any>(emptyLocation), [saving, setSaving] = useState(false);
   const [placing, setPlacing] = useState(false);
+  const [photos, setPhotos] = useState<LocationPhoto[]>([]);
+  const [photoUrls, setPhotoUrls] = useState<Record<string, string>>({});
+  const [photoReload, setPhotoReload] = useState(0);
+  const [photoManager, setPhotoManager] = useState(false);
+  const [photoCaption, setPhotoCaption] = useState("");
+  const [photoSource, setPhotoSource] = useState("");
+  const [photoRights, setPhotoRights] = useState("");
+  const [photoBusy, setPhotoBusy] = useState(false);
   const [origin, setOrigin] = useState(""), [destination, setDestination] = useState(""), [mode, setMode] = useState<"driving" | "walking">("driving"), [route, setRoute] = useState<RouteResult>(null), [routing, setRouting] = useState(false);
 
   useEffect(() => {
@@ -65,6 +74,26 @@ export default function Home() {
 
   useEffect(() => { load(); }, [load]);
 
+  useEffect(() => {
+    if (!supabase || !session || !selected?.id) { setPhotos([]); setPhotoUrls({}); return; }
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase.from("location_photos")
+        .select("id,location_id,storage_path,caption,source,rights_note,is_primary,sort_order")
+        .eq("location_id", selected.id).is("deleted_at", null).order("sort_order").order("created_at");
+      if (cancelled) return;
+      if (error) { setMessage("Nie udało się wczytać galerii: " + error.message); setPhotos([]); setPhotoUrls({}); return; }
+      const rows = (data || []) as LocationPhoto[];
+      setPhotos(rows);
+      const pairs = await Promise.all(rows.map(async photo => {
+        const { data: signed, error: signedError } = await supabase!.storage.from("world-assets").createSignedUrl(photo.storage_path, 3600);
+        return [photo.id, signedError ? "" : signed?.signedUrl || ""] as const;
+      }));
+      if (!cancelled) setPhotoUrls(Object.fromEntries(pairs.filter(([, url]) => url)));
+    })();
+    return () => { cancelled = true; };
+  }, [session, selected?.id, photoReload]);
+
   const filteredLocations = useMemo(() => locations.filter(l => {
     const text = [l.name, l.address, l.district, l.description].filter(Boolean).join(" ").toLocaleLowerCase("pl");
     return text.includes(query.toLocaleLowerCase("pl")) && (!l.category_id || visible.includes(l.category_id));
@@ -94,6 +123,55 @@ export default function Home() {
     setEditor(false); setMessage(form.id ? "Zapisano zmiany lokalizacji." : "Dodano lokalizację."); await load();
     if (!form.id && result.data?.id) { const { data } = await supabase.from("locations").select("*,location_categories(*)").eq("id", result.data.id).single(); if (data) setSelected(data as Location); }
   }
+  async function uploadPhoto(file: File | null, makePrimary: boolean) {
+    if (!file || !supabase || !selected) return;
+    const allowed = ["image/jpeg", "image/png", "image/webp", "image/avif"];
+    if (!allowed.includes(file.type)) { setMessage("Dozwolone formaty: JPG, PNG, WebP i AVIF."); return; }
+    if (file.size > 10 * 1024 * 1024) { setMessage("Plik jest za duży. Maksymalny rozmiar to 10 MB."); return; }
+    setPhotoBusy(true);
+    const ext = file.type === "image/jpeg" ? "jpg" : file.type.split("/")[1];
+    const path = "locations/" + selected.id + "/" + Date.now() + "-" + crypto.randomUUID() + "." + ext;
+    const { error: uploadError } = await supabase.storage.from("world-assets").upload(path, file, { contentType: file.type, cacheControl: "3600", upsert: false });
+    if (uploadError) { setPhotoBusy(false); setMessage("Nie udało się przesłać zdjęcia: " + uploadError.message); return; }
+    const { data: inserted, error: insertError } = await supabase.from("location_photos").insert({
+      location_id: selected.id, storage_path: path, caption: photoCaption.trim() || null,
+      source: photoSource.trim() || null, rights_note: photoRights.trim() || null,
+      is_primary: false, sort_order: photos.length
+    }).select("id").single();
+    if (insertError || !inserted) {
+      await supabase.storage.from("world-assets").remove([path]);
+      setPhotoBusy(false); setMessage("Plik przesłano, ale nie udało się zapisać go w galerii: " + (insertError?.message || "brak rekordu")); return;
+    }
+    if (makePrimary) {
+      const clear = await supabase.from("location_photos").update({ is_primary: false, updated_at: new Date().toISOString() }).eq("location_id", selected.id).neq("id", inserted.id).is("deleted_at", null);
+      const setMain = await supabase.from("location_photos").update({ is_primary: true, updated_at: new Date().toISOString() }).eq("id", inserted.id);
+      if (clear.error || setMain.error) setMessage("Zdjęcie dodano, ale nie udało się ustawić go jako głównego: " + (clear.error || setMain.error)?.message);
+      else setMessage("Dodano zdjęcie główne.");
+    } else setMessage("Dodano zdjęcie do galerii.");
+    setPhotoCaption(""); setPhotoSource(""); setPhotoRights("");
+    setPhotoBusy(false); setPhotoReload(v => v + 1);
+  }
+  async function setPrimaryPhoto(photo: LocationPhoto) {
+    if (!supabase || !selected) return;
+    setPhotoBusy(true);
+    const clear = await supabase.from("location_photos").update({ is_primary: false, updated_at: new Date().toISOString() }).eq("location_id", selected.id).neq("id", photo.id).is("deleted_at", null);
+    const setMain = await supabase.from("location_photos").update({ is_primary: true, updated_at: new Date().toISOString() }).eq("id", photo.id);
+    setPhotoBusy(false);
+    if (clear.error || setMain.error) setMessage("Nie udało się zmienić zdjęcia głównego: " + (clear.error || setMain.error)?.message);
+    else { setMessage("Zmieniono zdjęcie główne."); setPhotoReload(v => v + 1); }
+  }
+  async function removePhoto(photo: LocationPhoto) {
+    if (!supabase || !selected || !window.confirm("Usunąć to zdjęcie z karty?")) return;
+    setPhotoBusy(true);
+    const { error } = await supabase.from("location_photos").update({ deleted_at: new Date().toISOString(), deleted_by: session.user.id, deletion_reason: "Usunięto z galerii lokalizacji", is_primary: false, updated_at: new Date().toISOString() }).eq("id", photo.id);
+    if (error) { setPhotoBusy(false); setMessage("Nie udało się usunąć zdjęcia: " + error.message); return; }
+    if (photo.is_primary) {
+      const { data: next } = await supabase.from("location_photos").select("id").eq("location_id", selected.id).is("deleted_at", null).order("sort_order").limit(1).maybeSingle();
+      if (next?.id) await supabase.from("location_photos").update({ is_primary: true, updated_at: new Date().toISOString() }).eq("id", next.id);
+    }
+    setPhotoBusy(false); setMessage("Zdjęcie usunięto z karty."); setPhotoReload(v => v + 1);
+  }
+
   async function softDelete() {
     if (!supabase || !selected || !window.confirm("Przenieść to miejsce do kosza?")) return;
     const { error } = await supabase.from("locations").update({ deleted_at: new Date().toISOString(), deleted_by: session.user.id, deletion_reason: "Usunięto z karty lokalizacji" }).eq("id", selected.id);
@@ -158,17 +236,42 @@ export default function Home() {
       {rightOpen && <aside className="map-right">
         <div className="panel-heading"><div><small>KARTA OBIEKTU</small><h2>{selected ? "Wybrane miejsce" : "Akta lokalizacji"}</h2></div><button onClick={() => setRightOpen(false)} aria-label="Zwiń panel">›</button></div>
         {selected ? <div className="location-detail">
-          <div className="detail-image"><span>WARSZAWA ’97</span><b>{selected.location_categories?.name || "LOKALIZACJA"}</b></div>
+          <div className={"detail-image" + (photos.find(p => p.is_primary) && photoUrls[photos.find(p => p.is_primary)!.id] ? " has-photo" : "")}>
+            {photos.find(p => p.is_primary) && photoUrls[photos.find(p => p.is_primary)!.id] ? <img src={photoUrls[photos.find(p => p.is_primary)!.id]} alt={photos.find(p => p.is_primary)?.caption || selected.name} /> : <><span>WARSZAWA ’97</span><b>{selected.location_categories?.name || "LOKALIZACJA"}</b></>}
+          </div>
           <div className="detail-content"><div className="detail-status"><span style={{ background: selected.location_categories?.color || "#a98c62" }} />{selected.status === "active" ? "AKTYWNE" : selected.status.toUpperCase()}</div><h1>{selected.name}</h1><p className="address">{[selected.address, selected.district].filter(Boolean).join(" · ") || "Brak adresu"}</p>
             <div className="coordinates">{selected.latitude != null && selected.longitude != null ? selected.latitude.toFixed(5) + " · " + selected.longitude.toFixed(5) : "BRAK WSPÓŁRZĘDNYCH"}<span>{selected.campaign_period || "1997"}</span></div>
             <section className="detail-section"><small>OPIS / CHARAKTERYSTYKA</small><p>{selected.description || "Brak opisu tego miejsca."}</p></section>
+            <section className="detail-section photo-gallery-section"><div className="photo-gallery-heading"><small>GALERIA FOTOGRAFII</small><button type="button" onClick={() => setPhotoManager(true)}>ZARZĄDZAJ ZDJĘCIAMI</button></div>
+              {photos.length ? <div className="photo-gallery-grid">{photos.map(photo => <button type="button" key={photo.id} className={"photo-thumb" + (photo.is_primary ? " primary" : "")} onClick={() => setPhotoManager(true)} title={photo.caption || "Otwórz zarządzanie zdjęciami"}>{photoUrls[photo.id] ? <img src={photoUrls[photo.id]} alt={photo.caption || "Fotografia lokalizacji"} /> : <span>ŁADOWANIE…</span>}{photo.is_primary && <i>GŁÓWNE</i>}</button>)}</div> : <p>Brak fotografii. Dodaj zdjęcia do galerii tej lokalizacji.</p>}
+            </section>
             <section className="secret-section"><small>◈ TAJNE / NOTATKI MG</small><p>{selected.gm_notes || "Brak poufnych notatek."}</p></section>
-            <div className="detail-actions"><button onClick={editLocation}>EDYTUJ KARTĘ</button><button onClick={softDelete}>PRZENIEŚ DO KOSZA</button></div>
+            <div className="detail-actions"><button onClick={editLocation}>EDYTUJ KARTĘ</button><button onClick={() => setPhotoManager(true)}>ZDJĘCIA</button><button onClick={softDelete}>PRZENIEŚ DO KOSZA</button></div>
           </div>
         </div> : <div className="empty-detail"><div className="empty-mark">⌖</div><h3>Nie wybrano lokalizacji</h3><p>Wybierz punkt na mapie lub pozycję z listy po lewej stronie, aby otworzyć kartę miejsca.</p><button onClick={() => newLocation()}>＋ DODAJ PIERWSZE MIEJSCE</button></div>}
       </aside>}
     </div>
     {message && <div className="toast">{message}<button onClick={() => setMessage("")}>×</button></div>}
+    {photoManager && selected && <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget && !photoBusy) setPhotoManager(false); }}><section className="photo-manager">
+      <div className="editor-heading"><div><small>MATERIAŁY WIZUALNE / {selected.name.toUpperCase()}</small><h2>Zdjęcia lokalizacji</h2></div><button type="button" onClick={() => setPhotoManager(false)} disabled={photoBusy}>×</button></div>
+      <p className="photo-manager-intro">Zdjęcie główne pojawia się w panelu bocznym. Pozostałe fotografie tworzą galerię karty.</p>
+      <div className="photo-metadata-grid">
+        <label>PODPIS / OPIS<input value={photoCaption} onChange={e => setPhotoCaption(e.target.value)} placeholder="np. Wejście główne od ulicy" /></label>
+        <label>ŹRÓDŁO / AUTOR<input value={photoSource} onChange={e => setPhotoSource(e.target.value)} placeholder="np. Archiwum KSP, autor…" /></label>
+        <label className="wide">PRAWA / LICENCJA<input value={photoRights} onChange={e => setPhotoRights(e.target.value)} placeholder="np. CC BY-SA 4.0, domena publiczna, zgoda autora…" /></label>
+      </div>
+      <div className="photo-upload-actions">
+        <label className="photo-upload-button">＋ DODAJ ZDJĘCIE GŁÓWNE<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" disabled={photoBusy} onChange={e => { const file=e.target.files?.[0] || null; void uploadPhoto(file,true); e.currentTarget.value=""; }} /></label>
+        <label className="photo-upload-button secondary">＋ DODAJ DO GALERII<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" disabled={photoBusy} onChange={e => { const file=e.target.files?.[0] || null; void uploadPhoto(file,false); e.currentTarget.value=""; }} /></label>
+      </div>
+      {photoBusy && <p className="photo-manager-status">PRZESYŁANIE / ZAPISYWANIE…</p>}
+      <div className="photo-manager-list">{photos.map(photo => <article className="photo-manager-row" key={photo.id}>
+        {photoUrls[photo.id] ? <img src={photoUrls[photo.id]} alt={photo.caption || "Fotografia"} /> : <div className="photo-manager-placeholder">BRAK PODGLĄDU</div>}
+        <div className="photo-manager-meta"><b>{photo.caption || "Bez podpisu"}</b><small>{photo.source || "Nie podano źródła"}</small><small>{photo.rights_note || "Nie podano praw/licencji"}</small>{photo.is_primary && <em>ZD JĘCIE GŁÓWNE</em>}</div>
+        <div className="photo-manager-buttons">{!photo.is_primary && <button type="button" disabled={photoBusy} onClick={() => void setPrimaryPhoto(photo)}>USTAW GŁÓWNE</button>}<button type="button" disabled={photoBusy} onClick={() => void removePhoto(photo)}>USUŃ</button></div>
+      </article>)}</div>
+      <div className="editor-footer"><button type="button" className="cancel" onClick={() => setPhotoManager(false)} disabled={photoBusy}>ZAMKNIJ</button></div>
+    </section></div>}
     {editor && <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) setEditor(false); }}><form className="location-editor" onSubmit={saveLocation}>
       <div className="editor-heading"><div><small>{form.id ? "AKTUALIZACJA WPISU" : "NOWY WPIS DO ARCHIWUM"}</small><h2>{form.id ? "Edytuj lokalizację" : "Nowa lokalizacja"}</h2></div><button type="button" onClick={() => setEditor(false)}>×</button></div>
       <div className="editor-grid">
