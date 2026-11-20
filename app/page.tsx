@@ -77,7 +77,7 @@ export default function Home() {
   async function saveLocation(e: React.FormEvent) {
     e.preventDefault(); if (!supabase) return;
     setSaving(true);
-    const payload = { ...form, latitude: form.latitude === "" ? null : Number(form.latitude), longitude: form.longitude === "" ? null : Number(form.longitude), category_id: form.category_id || null };
+    const payload = { ...form, latitude: form.latitude === "" ? null : Number(form.latitude), longitude: form.longitude === "" ? null : Number(form.longitude), category_id: form.category_id || null, marker_icon: form.marker_icon || null };
     delete payload.id; delete payload.location_categories; delete payload.created_at; delete payload.updated_at; delete payload.created_by; delete payload.updated_by; delete payload.deleted_at; delete payload.deleted_by; delete payload.deletion_reason;
     const result = form.id ? await supabase.from("locations").update(payload).eq("id", form.id) : await supabase.from("locations").insert(payload).select("id").single();
     setSaving(false);
