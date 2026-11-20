@@ -289,6 +289,7 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
 
 /* Individually selectable location markers */
 .map-marker{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;padding:5px;background:#191B20;border:1.5px solid var(--marker-color,#8b8b8b);box-shadow:0 0 0 3px #101114B8,0 2px 8px #0009;cursor:pointer;transition:box-shadow .16s ease,transform .16s ease}
+.map-marker-fallback{display:block;color:#E5E1D8;font:22px/1 var(--font-display);pointer-events:none}
 .map-marker img{display:block;width:21px;height:21px;object-fit:contain;filter:brightness(0) invert(.9);pointer-events:none}
 .map-marker:hover{transform:scale(1.1);z-index:2}
 .map-marker.selected{border-color:#D8D4CC;box-shadow:0 0 0 3px #913E46,0 0 14px 5px #913E4680;z-index:3}
