@@ -72,3 +72,16 @@ Wniosek: przeglądarka dociera do właściwego Supabase i wywołuje właściwy e
 - Ikona jest niezależna od kategorii; kolor obrysu nadal pochodzi z kategorii.
 - Wybór ikony jest zapisywany w rekordzie lokalizacji i renderowany na mapie.
 - Biblioteka pozostaje rozszerzalna; metadane źródła/licencji wymagają uzupełnienia na podstawie konkretnych stron ikon.
+
+
+## Fotografie lokalizacji — implementacja 2026-11-21
+- Dodano obsługę prywatnego uploadu zdjęć lokalizacji do istniejącego bucketu Supabase Storage `world-assets`.
+- Zdjęcie główne jest prezentowane w górnym panelu bocznym karty obiektu.
+- Pozostałe zdjęcia oraz zdjęcie główne są pokazywane w galerii karty lokalizacji.
+- Zarządzanie zdjęciami obejmuje dodawanie zdjęcia głównego, dodawanie do galerii, ustawienie istniejącego zdjęcia jako głównego oraz miękkie usuwanie z karty.
+- Zachowywane są podpis, źródło/autorstwo i notatka o prawach/licencji.
+- Pliki są prywatne; UI korzysta z krótkotrwałych signed URLs. Storage pozostaje ograniczony istniejącymi politykami RLS do aktywnego MG.
+- Wykorzystywane są istniejące tabele `location_photos` i bucket `world-assets`; nie zmieniano schematu, polityk RLS, kont ani danych istniejących lokalizacji.
+- Limit zgodny z konfiguracją bucketu: 10 MB; dozwolone JPEG, PNG, WebP, AVIF.
+- Upload jest dostępny dla zapisanej lokalizacji. Nową lokalizację należy najpierw zapisać, a następnie dodać do niej zdjęcia.
+- Przed uznaniem funkcji za zweryfikowaną należy przetestować upload, signed URL, wybór zdjęcia głównego i usuwanie na produkcji.
