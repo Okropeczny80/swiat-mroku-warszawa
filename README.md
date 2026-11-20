@@ -44,4 +44,4 @@ Niewdrożone moduły: pełne karty postaci, organizacje, powiązania, archiwum, 
 - [Decyzje projektu](docs/DECISIONS.md)
 - [Stan projektu](docs/PROJECT_STATE.md)
 - [Supabase i migracje](supabase/README.md)
-- [Biblia Projektu — Świat Mroku, Warszawa 1997, v1.0](docs/PROJECT_BIBLE.md) — dokument referencyjny, jeśli został dodany do repozytorium.
+- Biblia Projektu — Świat Mroku, Warszawa 1997, v1.0 — nadrzędny dokument referencyjny przechowywany w bibliotece projektu.
