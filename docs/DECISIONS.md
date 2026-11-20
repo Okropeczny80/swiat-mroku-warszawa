@@ -63,3 +63,11 @@ W chwili ostatniego przeglądu GitHub zwracał `main` oraz dodatkową gałąź `
 - MapLibre pozostaje silnikiem mapy; istniejące znaczniki, ich wybór, wskazywanie punktu, trasy i skala pozostają obsługiwane.
 - OpenFreeMap deklaruje publiczny serwis bez klucza API i automatyczne dodawanie atrybucji przez MapLibre. Dane mapowe pochodzą z OpenStreetMap.
 - Styl Dark ma być punktem wyjścia do dalszego dopasowania; ewentualne indywidualne kolory warstw wymagają osobnej korekty stylu.
+
+
+## Korekta czytelności podkładu — Fiord
+
+- Po obejrzeniu wdrożonego stylu Dark użytkownik zgłosił zbyt niski kontrast ulic i etykiet.
+- Podkład zmieniono na OpenFreeMap Fiord, czyli alternatywny ciemny styl o chłodniejszej, łagodniejszej palecie.
+- Celem jest zachowanie ciemnego charakteru mapy przy zwiększeniu rozróżnienia dróg, terenów i opisów.
+- Znaczniki, trasy, interakcje MapLibre i dane aplikacji pozostają bez zmian.
