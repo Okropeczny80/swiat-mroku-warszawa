@@ -80,3 +80,11 @@ W chwili ostatniego przeglądu GitHub zwracał `main` oraz dodatkową gałąź `
 - To darmowy, gotowy styl OpenFreeMap niewymagający klucza API według katalogu Make with MapLibre i instrukcji OpenFreeMap.
 - MapLibre pozostaje silnikiem; znaczniki, trasy i dane aplikacji pozostają bez zmian.
 - Poprzedni wariant Fiord został zastąpiony na życzenie użytkownika.
+
+
+## Czytelność etykiet mapy — korekta 0.3
+
+- Użytkownik wskazał, że etykiety OpenFreeMap Dark są zbyt ciemne i muszą być jaśniejsze.
+- Po załadowaniu stylu warstwy symboli zawierające tekst otrzymują kolor `#D8D4CC`, ciemne halo `#17191D` o szerokości 1.15 oraz pełną nieprzezroczystość.
+- Zmiana dotyczy wyłącznie napisów; nie zmienia kolorów podkładu, znaczników, tras ani danych.
+- Należy zweryfikować czytelność przy kilku poziomach powiększenia.

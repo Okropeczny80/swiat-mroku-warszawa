@@ -18,7 +18,21 @@ export default function MapView({ locations, selectedId, route, onSelect, placin
       console.error("MapLibre error:", event.error || event);
       if (message.toLowerCase().includes("tile") || message.toLowerCase().includes("source")) setMapError("Nie udało się pobrać kafelków mapy. Sprawdź połączenie i odśwież stronę.");
     });
-    m.once("load", () => setMapError(""));
+    m.once("load", () => {
+      setMapError("");
+      // Improve label contrast while preserving the selected basemap.
+      for (const layer of m.getStyle().layers) {
+        if (layer.type !== "symbol" || !("text-field" in (layer.layout || {}))) continue;
+        try {
+          m.setPaintProperty(layer.id, "text-color", "#D8D4CC");
+          m.setPaintProperty(layer.id, "text-halo-color", "#17191D");
+          m.setPaintProperty(layer.id, "text-halo-width", 1.15);
+          m.setPaintProperty(layer.id, "text-opacity", 1);
+        } catch (error) {
+          console.warn("Nie udało się poprawić kontrastu etykiety mapy:", layer.id, error);
+        }
+      }
+    });
     m.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
     m.addControl(new maplibregl.ScaleControl({ maxWidth: 120, unit: "metric" }), "bottom-right");
     map.current = m;
