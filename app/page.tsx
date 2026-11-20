@@ -23,7 +23,7 @@ export default function Home() {
   const [selected, setSelected] = useState<Location | null>(null), [visible, setVisible] = useState<string[]>([]);
   const [query, setQuery] = useState(""), [categorySearch, setCategorySearch] = useState("");
   const [message, setMessage] = useState(""), [loading, setLoading] = useState(false);
-  const [leftOpen, setLeftOpen] = useState(true), [rightOpen, setRightOpen] = useState(true);
+  const [leftOpen, setLeftOpen] = useState(true), [rightOpen, setRightOpen] = useState(true), [textLarge, setTextLarge] = useState(false);
   const [editor, setEditor] = useState(false), [form, setForm] = useState<any>(emptyLocation), [saving, setSaving] = useState(false);
   const [placing, setPlacing] = useState(false);
   const [origin, setOrigin] = useState(""), [destination, setDestination] = useState(""), [mode, setMode] = useState<"driving" | "walking">("driving"), [route, setRoute] = useState<RouteResult>(null), [routing, setRouting] = useState(false);
@@ -107,13 +107,13 @@ export default function Home() {
   function toggleCategory(id: string) { setVisible(v => v.includes(id) ? v.filter(x => x !== id) : [...v, id]); }
 
   if (!ready) return <main className="loading-screen">OTWIERANIE ARCHIWUM…</main>;
-  if (!session) return <main className="login-shell"><header className="topline"><span>AKTA TAJNE / WYDZIAŁ SPRAW NIETYPOWYCH</span><b>ARCHIWUM WARSZAWA ’97</b></header><section className="login-paper"><div className="seal">MW</div><p className="eyebrow">WORLD OF DARKNESS · WARSZAWA</p><h1>ŚWIAT MROKU</h1><p className="year">1997</p><h2>UWIERZYTELNIENIE ARCHIWISTY</h2><form onSubmit={login}><label>ADRES E-MAIL</label><input type="email" required value={email} onChange={e => setEmail(e.target.value)} /><label>HASŁO</label><input type="password" required value={password} onChange={e => setPassword(e.target.value)} /><button className="primary">OTWÓRZ AKTA</button></form>{message && <p className="message">{message}</p>}<small>DOSTĘP WYŁĄCZNIE DLA UPOWAŻNIONEGO PERSONELU</small></section><footer>Nie każdy sekret powinien ujrzeć światło dzienne.</footer></main>;
+  if (!session) return <main className="login-shell"><header className="topline"><span>AKTA TAJNE / WYDZIAŁ SPRAW NIETYPOWYCH</span><b>ARCHIWUM WARSZAWA ’97</b></header><section className="login-paper"><div className="seal">97</div><p className="eyebrow">WORLD OF DARKNESS · WARSZAWA</p><h1>ŚWIAT MROKU</h1><p className="year">1997</p><h2>UWIERZYTELNIENIE ARCHIWISTY</h2><form onSubmit={login}><label>ADRES E-MAIL</label><input type="email" required value={email} onChange={e => setEmail(e.target.value)} /><label>HASŁO</label><input type="password" required value={password} onChange={e => setPassword(e.target.value)} /><button className="primary">OTWÓRZ AKTA</button></form>{message && <p className="message">{message}</p>}<small>DOSTĘP WYŁĄCZNIE DLA UPOWAŻNIONEGO PERSONELU</small></section><footer>Nie każdy sekret powinien ujrzeć światło dzienne.</footer></main>;
 
-  return <main className="map-app">
+  return <main className={"map-app" + (textLarge ? " text-large" : "")}>
     <header className="map-topbar">
-      <div className="brand"><div className="brand-seal">MW</div><div><strong>ŚWIAT MROKU</strong><small>WARSZAWA · 1997</small></div></div>
+      <div className="brand"><div className="brand-seal">97</div><div><strong>ŚWIAT MROKU</strong><small>WARSZAWA · 1997</small></div></div>
       <nav className="top-tabs"><button className="active">MAPA</button><button disabled>POSTACIE</button><button disabled>ORGANIZACJE</button><button disabled>POWIĄZANIA</button><button disabled>ARCHIWUM</button><button disabled>SZUKAJ</button></nav>
-      <div className="user-tools"><span>● MG / {session.user.email}</span><button onClick={() => supabase?.auth.signOut()}>WYLOGUJ ↗</button></div>
+      <div className="user-tools"><span>● MG / {session.user.email}</span><button type="button" onClick={() => setTextLarge(v => !v)} aria-pressed={textLarge} aria-label={textLarge ? "Przywróć standardowy rozmiar tekstu" : "Powiększ tekst"}>{textLarge ? "A−" : "A+"}</button><button onClick={() => supabase?.auth.signOut()}>WYLOGUJ ↗</button></div>
     </header>
     <div className="map-workspace">
       {leftOpen && <aside className="map-left">

@@ -82,7 +82,7 @@ export default function MapView({ locations, selectedId, route, onSelect, placin
       if (existing) existing.setData(data);
       else {
         m.addSource("planned-route", { type: "geojson", data });
-        m.addLayer({ id: "planned-route-line", type: "line", source: "planned-route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#c49a5b", "line-width": 5, "line-opacity": 0.9 } });
+        m.addLayer({ id: "planned-route-line", type: "line", source: "planned-route", layout: { "line-join": "round", "line-cap": "round" }, paint: { "line-color": "#913E46", "line-width": 3, "line-opacity": 0.92 } });
       }
       const bounds = new maplibregl.LngLatBounds(); route.coordinates.forEach(c => bounds.extend([c[0], c[1]]));
       m.fitBounds(bounds, { padding: 90, maxZoom: 14, duration: 600 });

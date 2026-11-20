@@ -16,3 +16,32 @@
 ## Uwaga o gałęziach
 
 W chwili ostatniego przeglądu GitHub zwracał `main` oraz dodatkową gałąź `feature/mapa-warszawy`. Zgodnie z decyzją roboczą używana jest wyłącznie `main`; gałąź dodatkowa nie jest wykorzystywana ani automatycznie usuwana przez tę dokumentacyjną aktualizację.
+
+
+## Zatwierdzony system wizualny — Gothic Noir
+
+- Paleta: tło `#101114`, panele `#191B20`, powierzchnie `#252830`, tekst `#E5E1D8`, akcent burgundowy `#913E46`.
+- Typografia: EB Garamond dla nagłówków i nazw; IBM Plex Sans dla interfejsu i treści; IBM Plex Mono dla identyfikatorów, dat i metadanych. Fonty muszą obsługiwać polskie znaki.
+- Karty: minimalistyczne, cienkie obramowania, lekko zaokrąglone narożniki, bez ozdobnych ramek.
+- Przyciski: minimalistyczne; burgundowe akcje główne, obrysowane drugorzędne, tekstowe anulowanie, czerwone akcje destrukcyjne.
+- Formularze: ciemne pola, etykiety nad polami, burgundowy fokus i czytelne komunikaty walidacji.
+- Mapa: rzeczywista mapa Warszawy w MapLibre, przyciemniona z czytelnymi ulicami; kolorowe punkty z obrysem; cienkie burgundowe trasy.
+- Kolory kategorii: niebezpieczeństwo `#B94A50`; policja/instytucje `#6194C2`; pomoc/bezpieczeństwo `#78A17A`; nadnaturalne `#9A79B8`; tropy `#C49A55`; pozostałe `#92999D`.
+- Nawigacja: stały górny pasek z ikoną i etykietą oraz kontekstowe panele boczne; panele niezależnie zwijane.
+- Dostępność: wysoki, umiarkowany kontrast; standardowy tekst z możliwością powiększenia; pełna obsługa klawiaturą i wyraźny fokus; respektowanie `prefers-reduced-motion`.
+- Ruch: dyskretne przejścia około 150–220 ms; bez pulsowania i migania.
+- Logo pozostaje niezdecydowane. Oznaczenie roku jest tymczasowym elementem typograficznym, nie zatwierdzonym logo.
+
+## Poufność i przyszły dostęp graczy
+
+- Każdy typ rekordu (w tym znacznik i karta) ma docelowo niezależną flagę `Tylko MG`, która wyłącza cały rekord z widoku gracza.
+- Każda karta ma osobną sekcję MG, ukrytą przed graczami również wtedy, gdy karta jest im udostępniona.
+- Poufność musi być egzekwowana w bazie/API/RLS i Storage, a nie wyłącznie przez ukrycie elementu w interfejsie.
+- Obecna aplikacja jest dostępna wyłącznie dla MG; model graczy nie jest jeszcze wdrożony. Nie dodawać pól ani polityk do Supabase bez audytu istniejącego schematu, uprawnień i historii migracji.
+
+## Galerie i materiały wizualne
+
+- Docelowo każda karta może mieć wiele zdjęć; wybór zdjęcia głównego, kolejność, podpis, źródło, autor i licencja.
+- Filtry per zdjęcie: Original, Noir, Noir Soft; zawsze zachować oryginał i stosować filtr niedestrukcyjnie.
+- Materiały World of Darkness mogą być użyte po sprawdzeniu praw do wykorzystania; logo pozostaje otwarte.
+- To wymagania projektowe, nie deklaracja, że galerie są już zaimplementowane.
