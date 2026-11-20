@@ -8,11 +8,20 @@ type Category = { id: string; name: string; slug: string; color: string; icon: s
 type Location = {
   id: string; name: string; category_id: string | null; status: string; address: string | null;
   district: string | null; latitude: number | null; longitude: number | null;
-  campaign_period: string | null; description: string | null; gm_notes: string | null;
+  campaign_period: string | null; description: string | null; gm_notes: string | null; marker_icon: string | null;
   location_categories?: Category | null;
 };
 type RouteResult = { geometry: GeoJSON.LineString; distance: number; duration: number } | null;
-const emptyLocation = { name: "", category_id: "", status: "active", address: "", district: "", latitude: "", longitude: "", campaign_period: "1997", description: "", gm_notes: "" };
+const MARKER_ICONS = [
+  { key: "places-court", label: "Miejsca publiczne", file: "/markers/places-court.svg" },
+  { key: "police-badge", label: "Policja i służby", file: "/markers/police-badge.svg" },
+  { key: "building", label: "Miejsca zamieszkania", file: "/markers/building.svg" },
+  { key: "criminal", label: "Miejsca zbrodni", file: "/markers/criminal.svg" },
+  { key: "pentacle", label: "Miejsca nadnaturalne", file: "/markers/pentacle.svg" },
+  { key: "night-club", label: "Lokale i rozrywka", file: "/markers/night-club.svg" },
+  { key: "bridge", label: "Infrastruktura", file: "/markers/bridge.svg" },
+] as const;
+const emptyLocation = { name: "", category_id: "", status: "active", address: "", district: "", latitude: "", longitude: "", campaign_period: "1997", description: "", gm_notes: "", marker_icon: "" };
 const fmtDistance = (m: number) => m >= 1000 ? (m / 1000).toFixed(1).replace(".", ",") + " km" : Math.round(m) + " m";
 const fmtDuration = (s: number) => { const m = Math.round(s / 60); return m >= 60 ? Math.floor(m / 60) + " godz. " + (m % 60) + " min" : m + " min"; };
 
@@ -165,6 +174,16 @@ export default function Home() {
       <div className="editor-grid">
         <label className="wide">NAZWA MIEJSCA<input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></label>
         <label>KATEGORIA<select value={form.category_id} onChange={e => setForm({ ...form, category_id: e.target.value })}><option value="">Bez kategorii</option>{categories.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}</select></label>
+        <label className="wide marker-picker-label">ZNACZNIK NA MAPIE
+          <div className="marker-picker">
+            <button type="button" className={"marker-choice marker-choice-auto" + (!form.marker_icon ? " chosen" : "")} onClick={() => setForm({ ...form, marker_icon: "" })}>
+              <span className="marker-choice-preview">⌖</span><span>Automatyczny</span><small>Domyślny znacznik</small>
+            </button>
+            {MARKER_ICONS.map(icon => <button type="button" key={icon.key} className={"marker-choice" + (form.marker_icon === icon.key ? " chosen" : "")} onClick={() => setForm({ ...form, marker_icon: icon.key })} aria-pressed={form.marker_icon === icon.key}>
+              <span className="marker-choice-preview"><img src={icon.file} alt="" /></span><span>{icon.label}</span>
+            </button>)}
+          </div>
+        </label>
         <label>STATUS<select value={form.status} onChange={e => setForm({ ...form, status: e.target.value })}><option value="active">Aktywne</option><option value="inactive">Nieaktywne</option><option value="archived">Archiwalne</option></select></label>
         <label>ADRES<input value={form.address || ""} onChange={e => setForm({ ...form, address: e.target.value })} /></label>
         <label>DZIELNICA<input value={form.district || ""} onChange={e => setForm({ ...form, district: e.target.value })} /></label>
