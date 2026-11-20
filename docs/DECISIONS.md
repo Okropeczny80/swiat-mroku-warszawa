@@ -45,3 +45,12 @@ W chwili ostatniego przeglądu GitHub zwracał `main` oraz dodatkową gałąź `
 - Filtry per zdjęcie: Original, Noir, Noir Soft; zawsze zachować oryginał i stosować filtr niedestrukcyjnie.
 - Materiały World of Darkness mogą być użyte po sprawdzeniu praw do wykorzystania; logo pozostaje otwarte.
 - To wymagania projektowe, nie deklaracja, że galerie są już zaimplementowane.
+
+
+## Korekta interfejsu 0.2 — mapa i czytelność
+
+- Mapa OSM pozostaje rzeczywistą mapą MapLibre; zwiększono monochromatyczność i obniżono jasność kafelków, aby uzyskać grafitowy widok z czytelnymi ulicami.
+- Zwiększono typografię i odstępy w panelach bocznych oraz poszerzono je dla wygodniejszego przeglądania lokalizacji i przyszłych kart.
+- Tymczasowy znak „97” zastąpiono samą nazwą projektu. Logo pozostaje decyzją otwartą.
+- Rozróżniono akcje: „Wskaż punkt na mapie” uruchamia wskazywanie współrzędnych na mapie; „Nowa lokalizacja · formularz” otwiera formularz wpisu.
+- Zachowano MapLibre, OSM, znaczniki, trasowanie, edycję i soft-delete. Nie zmieniano bazy Supabase ani polityk RLS.

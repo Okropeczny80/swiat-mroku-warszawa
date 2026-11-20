@@ -111,7 +111,7 @@ export default function Home() {
 
   return <main className={"map-app" + (textLarge ? " text-large" : "")}>
     <header className="map-topbar">
-      <div className="brand"><div className="brand-seal">97</div><div><strong>ŚWIAT MROKU</strong><small>WARSZAWA · 1997</small></div></div>
+      <div className="brand"><div className="brand-wordmark"><strong>ŚWIAT MROKU</strong><small>WARSZAWA · 1997</small></div></div>
       <nav className="top-tabs"><button className="active">MAPA</button><button disabled>POSTACIE</button><button disabled>ORGANIZACJE</button><button disabled>POWIĄZANIA</button><button disabled>ARCHIWUM</button><button disabled>SZUKAJ</button></nav>
       <div className="user-tools"><span>● MG / {session.user.email}</span><button type="button" onClick={() => setTextLarge(v => !v)} aria-pressed={textLarge} aria-label={textLarge ? "Przywróć standardowy rozmiar tekstu" : "Powiększ tekst"}>{textLarge ? "A−" : "A+"}</button><button onClick={() => supabase?.auth.signOut()}>WYLOGUJ ↗</button></div>
     </header>
@@ -136,11 +136,11 @@ export default function Home() {
           })}</div>
           <div className="place-list">{filteredLocations.map(l => <button key={l.id} className={"place-row " + (selected?.id === l.id ? "chosen" : "")} onClick={() => setSelected(l)}><i style={{ background: l.location_categories?.color || "#a98c62" }} /><span><b>{l.name}</b><small>{l.district || l.address || "Warszawa"}</small></span><em>›</em></button>)}</div>
         </section>
-        <button className="add-location" onClick={() => newLocation()}>＋ DODAJ LOKALIZACJĘ</button>
+        <button className="add-location" onClick={() => newLocation()}>＋ NOWA LOKALIZACJA · FORMULARZ</button>
       </aside>}
       {!leftOpen && <button className="reopen left-reopen" onClick={() => setLeftOpen(true)}>› LOKALIZACJE</button>}
       <section className="map-stage">
-        <div className="map-title"><span>WARSZAWA / POLSKA</span><b>PLAN MIASTA · WIDOK OPERACYJNY</b><button type="button" className={"map-place-toggle" + (placing ? " active" : "")} onClick={() => { setPlacing(v => !v); setMessage(placing ? "Anulowano dodawanie punktu." : "Tryb dodawania: kliknij wybrane miejsce na mapie."); }}>{placing ? "ANULUJ DODAWANIE ×" : "＋ DODAJ PUNKT"}</button><span>1997</span></div>
+        <div className="map-title"><span>WARSZAWA / POLSKA</span><b>PLAN MIASTA · WIDOK OPERACYJNY</b><button type="button" className={"map-place-toggle" + (placing ? " active" : "")} onClick={() => { setPlacing(v => !v); setMessage(placing ? "Anulowano dodawanie punktu." : "Tryb dodawania: kliknij wybrane miejsce na mapie."); }}>{placing ? "ANULUJ WSKAZYWANIE ×" : "＋ WSKAŻ PUNKT NA MAPIE"}</button><span>1997</span></div>
         {placing && <div className="map-placement-hint">TRYB DODAWANIA · KLIKNIJ NA MAPIE, ABY USTAWIĆ ZNACZNIK</div>}
         <MapView locations={filteredLocations} selectedId={selected?.id || null} route={route?.geometry || null} onSelect={p => setSelected(p as Location)} placing={placing} onMapClick={handleMapClick} />
         {loading && <div className="map-loading">SYNCHRONIZACJA DANYCH…</div>}

@@ -28,10 +28,10 @@ export default function MapView({ locations, selectedId, route, onSelect, placin
           type: "raster",
           source: "osm",
           paint: {
-            "raster-saturation": -0.78,
-            "raster-contrast": 0.12,
-            "raster-brightness-min": 0.12,
-            "raster-brightness-max": 0.72,
+            "raster-saturation": -0.92,
+            "raster-contrast": 0.18,
+            "raster-brightness-min": 0.035,
+            "raster-brightness-max": 0.40,
             "raster-fade-duration": 0
           }
         }
