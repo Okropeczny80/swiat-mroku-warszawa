@@ -58,3 +58,31 @@ W trakcie poprzedniej sesji utworzono dodatkową gałąź `feature/location-mark
 - `docs/PROJECT_STATE.md` — szczegółowy stan i handoff.
 - `docs/DECISIONS.md` — trwałe decyzje.
 - Ten plik — skrót startowy dla kolejnej sesji.
+
+
+## Najnowsza sesja — moduł POSTACIE (2026-11-21)
+
+### Stan
+- Zakładka POSTACIE jest aktywna w menu głównym.
+- Produkcyjny deployment na main: commit bd1174d60725a4a5849770d70c54b27a7a562324, Vercel deployment dpl_AqpKdYebifAwqQNcbqj2eRcLEna4, status READY.
+- Produkcja: https://swiat-mroku-warszawa.vercel.app
+- Użytkownik obejrzał wdrożony ekran: po lewej rejestr, po prawej karta Jan Kowalski / pseudonim Oko. Ogólny wygląd Gothic Noir i układ zostały zaakceptowane jako kierunek; nie przebudowywać.
+
+### Zaimplementowane
+- components/CharacterModule.tsx; integracja w app/page.tsx; style w app/globals.css.
+- Lista postaci z wyszukiwaniem i filtrem typów; tworzenie i edycja danych osobowych, typ/status, biografia, notatki MG.
+- Widok przynależności organizacyjnych z istniejących organization_memberships i organizations.
+- Prywatny upload portretów do world-assets, signed URLs, ustawianie głównego zdjęcia, galeria.
+- Miękkie usuwanie postaci z potwierdzeniem.
+- Bez zmian schematu bazy, danych istniejących, Auth i RLS.
+
+### Ograniczenia / testy
+- Build Next.js przeszedł; deployment produkcyjny READY; sprawdzenie runtime nie wykazało błędów w badanym oknie.
+- Nie wykonano pełnego testu zalogowanego zapisu/edycji/usuwania ani uploadu zdjęć. Przetestować przed uznaniem tych funkcji za w pełni gotowe.
+- Statusy w interfejsie wymagają polskich etykiet (np. active → Aktywna).
+- Użytkownik zwrócił uwagę na brak współczynników: obecna karta jest tylko kartą ewidencyjną, nie pełną kartą mechaniczną.
+
+### Najważniejszy następny krok
+Zaprojektować i wdrożyć brakującą kartę mechaniczną ze współczynnikami zgodnie z oryginalnym arkuszem/systemem użytkownika. W rozmowie padła propozycja osobnej zakładki KARTA MECHANICZNA wewnątrz karty postaci — wymaga potwierdzenia. Nie wymyślać listy atrybutów/umiejętności na podstawie domysłów. Najpierw odzyskać/obejrzeć oryginalną kartę źródłową, uzgodnić dokładne pola i dopiero potem audytować model bazy oraz implementować zapis. Karta ma być uniwersalna, bez odrębnych sztywnych szablonów dla gatunków nadnaturalnych.
+
+Drobne ulepszenia do rozważenia po mechanice: polskie etykiety statusów, pseudonim wyraźniej wyróżniony, powiększanie zdjęć, możliwość dodawania przynależności z karty; relacje zostawić modułowi Powiązania.
