@@ -45,3 +45,9 @@ Nieukończone moduły: pełne karty postaci, organizacje, powiązania, archiwum,
 - [Stan projektu](docs/PROJECT_STATE.md)
 - [Supabase i migracje](supabase/README.md)
 - Biblia Projektu — Świat Mroku, Warszawa 1997, v1.0 — nadrzędny dokument referencyjny przechowywany w bibliotece projektu.
+
+
+## Handoff kolejnej sesji
+
+- [SESSION_HANDOFF.md](docs/SESSION_HANDOFF.md) — skrót zasad pracy, infrastruktury, zaakceptowanego wyglądu, aktualnego stanu i następnych kroków.
+- Biblia Projektu v1.1 — uzupełnienie w Library: `/Biblia_Projektu_Swiat_Mroku_Warszawa_1997_v1.1.txt`.
