@@ -37,7 +37,7 @@ Nie włączaj Preview deployments bez wyraźnej zgody właściciela projektu.
 
 Zaimplementowane: logowanie e-mail/hasło, ekran mapy Warszawy, lokalizacje i kategorie, dodawanie/edycja/soft-delete lokalizacji, notatki MG, wyznaczanie tras pieszych i samochodowych.
 
-Niewdrożone moduły: pełne karty postaci, organizacje, powiązania, archiwum, galerie zdjęć, globalna wyszukiwarka i interfejs kosza/przywracania. Zakładki tych modułów pozostają nieaktywne.
+Nieukończone moduły: pełne karty postaci, organizacje, powiązania, archiwum, globalna wyszukiwarka i interfejs kosza/przywracania. Obsługa fotografii lokalizacji została dodana do kodu, ale wymaga jeszcze pełnego testu produkcyjnego (upload, signed URL, wybór zdjęcia głównego, ponowne otwarcie karty i usuwanie). Galerie postaci i organizacji nie są jeszcze zaimplementowane.
 
 ## Dokumentacja
 
