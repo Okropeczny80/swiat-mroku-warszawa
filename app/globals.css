@@ -346,3 +346,6 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
 .photo-manager-buttons{display:flex;flex-direction:column;gap:6px}
 .photo-manager-buttons button:last-child{border-color:#74434A;color:#E0A7AC}
 @media(max-width:560px){.photo-metadata-grid{grid-template-columns:1fr}.photo-metadata-grid .wide{grid-column:auto}.photo-manager-row{grid-template-columns:82px minmax(0,1fr)}.photo-manager-row>img,.photo-manager-placeholder{width:82px;height:68px}.photo-manager-buttons{grid-column:1/-1;flex-direction:row;justify-content:flex-end}}
+
+/* Occult/pentacle artwork has finer geometry than the other marker symbols; enlarge only this icon while keeping the shared marker size. */
+.map-app .map-marker.map-marker-icon-pentacle img{width:25px;height:25px;max-width:25px;max-height:25px}
