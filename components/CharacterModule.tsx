@@ -24,7 +24,7 @@ export default function CharacterModule({ session, onMessage }: { session: any; 
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [editor, setEditor] = useState(false);
-  const [form, setForm] = useState(blank);
+  const [form, setForm] = useState<any>(blank);
   const [saving, setSaving] = useState(false);
   const [photoBusy, setPhotoBusy] = useState(false);
   const [photoRefresh, setPhotoRefresh] = useState(0);
@@ -75,7 +75,7 @@ export default function CharacterModule({ session, onMessage }: { session: any; 
   function openNew() { setForm(blank); setEditor(true); }
   function openEdit() {
     if (!selected) return;
-    setForm({ first_name: selected.first_name || "", last_name: selected.last_name || "", nickname: selected.nickname || "", age: selected.age == null ? "" : String(selected.age), occupation: selected.occupation || "", status: selected.status || "active", character_type_id: selected.character_type_id || "", biography: selected.biography || "", gm_notes: selected.gm_notes || "" });
+    setForm({ id: selected.id, first_name: selected.first_name || "", last_name: selected.last_name || "", nickname: selected.nickname || "", age: selected.age == null ? "" : String(selected.age), occupation: selected.occupation || "", status: selected.status || "active", character_type_id: selected.character_type_id || "", biography: selected.biography || "", gm_notes: selected.gm_notes || "" });
     setEditor(true);
   }
   async function save(e: React.FormEvent) {
