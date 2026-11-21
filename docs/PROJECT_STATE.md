@@ -144,3 +144,37 @@ Wniosek: przeglądarka dociera do właściwego Supabase i wywołuje właściwy e
 - Biblia v1.0 zachowuje pierwotną koncepcję.
 - Uzupełnienie v1.1 znajduje się w Library jako `/Biblia_Projektu_Swiat_Mroku_Warszawa_1997_v1.1.txt`.
 - README, PROJECT_STATE i ten handoff są dokumentacją repozytorium; nie zastępują Biblii.
+
+
+## Moduł POSTACIE — stan na 2026-11-21
+
+### Co zostało wdrożone
+- Włączono zakładkę POSTACIE w głównym menu; MAPA i dotychczasowy moduł mapy pozostają dostępne.
+- Dodano komponent components/CharacterModule.tsx i style w app/globals.css; moduł jest osadzony w app/page.tsx.
+- Układ: rejestr postaci po lewej (wyszukiwanie, filtr typu, lista, nowa postać), karta szczegółów po prawej.
+- Karta pokazuje: imię i nazwisko, pseudonim, typ, wiek, zawód, status, biografię, przynależności organizacyjne, galerię/portrety i osobne notatki MG.
+- Formularz dodawania/edycji obejmuje dane podstawowe, typ, status, biografię i notatki MG.
+- Dodano upload portretów do prywatnego bucketa world-assets (JPEG/PNG/WebP/AVIF, do 10 MB), signed URLs, ustawianie zdjęcia głównego.
+- Usuwanie postaci jest miękkie i wymaga potwierdzenia.
+- Moduł korzysta z istniejących tabel characters, character_types, character_photos, organization_memberships i organizations; nie wykonywano zmian schematu ani polityk RLS.
+
+### Wdrożenie
+- Commit produkcyjny: bd1174d60725a4a5849770d70c54b27a7a562324 — style: add Gothic Noir character registry.
+- Vercel deployment: dpl_AqpKdYebifAwqQNcbqj2eRcLEna4, target production, status READY.
+- Produkcja: https://swiat-mroku-warszawa.vercel.app
+- Użytkownik otworzył moduł i pokazał kartę testowej postaci Jan Kowalski, pseudonim Oko; ekran potwierdza widok karty i wpis w rejestrze.
+- Build Next.js zakończył się powodzeniem. Nie stwierdzono runtime errors w sprawdzonym oknie.
+- Nie przeprowadzono pełnego testu end-to-end CRUD ani uploadu zdjęć w zalogowanej sesji. Nie deklarować tych ścieżek jako zweryfikowanych.
+
+### Brakująca część — karta mechaniczna / współczynniki
+- Użytkownik słusznie wskazał, że obecna karta nie zawiera współczynników. Aktualny moduł jest na razie kartą ewidencyjno-biograficzną, nie pełną kartą postaci.
+- Użytkownik oczekuje osobnej, właściwej karty mechanicznej ze współczynnikami, zgodnej z oryginalnym arkuszem systemu. Nie wolno samodzielnie zakładać listy ani liczby współczynników z ogólnej wiedzy — trzeba odtworzyć ją z materiału/oryginalnej karty użytkownika.
+- W rozmowie zaproponowano zakładkę KARTA MECHANICZNA wewnątrz karty postaci, zachowując obecny widok osobowy. To propozycja do dalszego uzgodnienia, nie zatwierdzona implementacja.
+- Wymagania docelowe: edytowalne współczynniki, zapisywanie w bazie, atuty/wady i inne sekcje zgodne z oryginalną kartą; jedna uniwersalna karta niezależna od rodzaju istoty, bez sztywnych szablonów dla wampirów/wilkołaków/magów itd.
+- Nie zapisywać współczynników jako dowolnego JSON ani nie zmieniać schematu bazy bez wcześniejszego audytu i uzgodnienia modelu danych. Najpierw obejrzeć źródłową kartę/system i uzgodnić dokładny układ oraz pola.
+
+### Uwagi po pierwszym obejrzeniu przez użytkownika
+- Użytkownik zaakceptował ogólny kierunek wizualny i układ obecnej karty; nie robić rewolucji w stylistyce.
+- Zauważona drobna poprawka: statusy techniczne typu active powinny być prezentowane po polsku (np. Aktywna).
+- Dalsze pomysły zgłoszone do rozważenia: pseudonim wyraźniej wyróżniony, powiększanie portretu, dodawanie przynależności organizacyjnych z karty, późniejsze pokazanie relacji z innymi postaciami.
+- Następny krok: na początku kolejnej sesji wrócić do karty mechanicznej i źródłowego arkusza współczynników; nie zaczynać kolejnego modułu menu przed uzgodnieniem brakującej części.
