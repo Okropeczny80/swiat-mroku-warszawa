@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import MapView from "@/components/MapView";
+import CharacterModule from "@/components/CharacterModule";
 
 type Category = { id: string; name: string; slug: string; color: string; icon: string | null; sort_order: number };
 type Location = {
@@ -28,6 +29,7 @@ const fmtDuration = (s: number) => { const m = Math.round(s / 60); return m >= 6
 
 export default function Home() {
   const [session, setSession] = useState<any>(null), [ready, setReady] = useState(false);
+  const [activeSection, setActiveSection] = useState<"map" | "characters">("map");
   const [email, setEmail] = useState(""), [password, setPassword] = useState("");
   const [categories, setCategories] = useState<Category[]>([]), [locations, setLocations] = useState<Location[]>([]);
   const [selected, setSelected] = useState<Location | null>(null), [visible, setVisible] = useState<string[]>([]);
@@ -199,10 +201,10 @@ export default function Home() {
   return <main className={"map-app" + (textLarge ? " text-large" : "")}>
     <header className="map-topbar">
       <div className="brand"><div className="brand-wordmark"><strong>ŚWIAT MROKU</strong><small>WARSZAWA · 1997</small></div></div>
-      <nav className="top-tabs"><button className="active">MAPA</button><button disabled>POSTACIE</button><button disabled>ORGANIZACJE</button><button disabled>POWIĄZANIA</button><button disabled>ARCHIWUM</button><button disabled>SZUKAJ</button></nav>
+      <nav className="top-tabs"><button className={activeSection === "map" ? "active" : ""} onClick={() => setActiveSection("map")}>MAPA</button><button className={activeSection === "characters" ? "active" : ""} onClick={() => setActiveSection("characters")}>POSTACIE</button><button disabled>ORGANIZACJE</button><button disabled>POWIĄZANIA</button><button disabled>ARCHIWUM</button><button disabled>SZUKAJ</button></nav>
       <div className="user-tools"><span>● MG / {session.user.email}</span><button type="button" onClick={() => setTextLarge(v => !v)} aria-pressed={textLarge} aria-label={textLarge ? "Przywróć standardowy rozmiar tekstu" : "Powiększ tekst"}>{textLarge ? "A−" : "A+"}</button><button onClick={() => supabase?.auth.signOut()}>WYLOGUJ ↗</button></div>
     </header>
-    <div className="map-workspace">
+    {activeSection === "characters" ? <CharacterModule session={session} onMessage={setMessage} /> : <div className="map-workspace">
       {leftOpen && <aside className="map-left">
         <div className="panel-heading"><div><small>NAWIGACJA TERENOWA</small><h2>Warszawa</h2></div><button onClick={() => setLeftOpen(false)} aria-label="Zwiń panel">‹</button></div>
         <section className="route-card">
@@ -250,7 +252,7 @@ export default function Home() {
           </div>
         </div> : <div className="empty-detail"><div className="empty-mark">⌖</div><h3>Nie wybrano lokalizacji</h3><p>Wybierz punkt na mapie lub pozycję z listy po lewej stronie, aby otworzyć kartę miejsca.</p><button onClick={() => newLocation()}>＋ DODAJ PIERWSZE MIEJSCE</button></div>}
       </aside>}
-    </div>
+    </div>}
     {message && <div className="toast">{message}<button onClick={() => setMessage("")}>×</button></div>}
     {photoManager && selected && <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget && !photoBusy) setPhotoManager(false); }}><section className="photo-manager">
       <div className="editor-heading"><div><small>MATERIAŁY WIZUALNE / {selected.name.toUpperCase()}</small><h2>Zdjęcia lokalizacji</h2></div><button type="button" onClick={() => setPhotoManager(false)} disabled={photoBusy}>×</button></div>
