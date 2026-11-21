@@ -52,7 +52,7 @@ export default function MapView({ locations, selectedId, route, onSelect, placin
     locations.forEach(p => {
       if (typeof p.latitude !== "number" || typeof p.longitude !== "number") return;
       const el = document.createElement("button");
-      el.type = "button"; el.className = "map-marker" + (p.id === selectedId ? " selected" : "");
+      el.type = "button"; el.className = "map-marker" + (p.marker_icon === "pentacle" ? " map-marker-icon-pentacle" : "") + (p.id === selectedId ? " selected" : "");
       el.style.setProperty("--marker-color", p.location_categories?.color || "#8b8b8b");
       if (p.marker_icon) {
         const icon = document.createElement("img");
