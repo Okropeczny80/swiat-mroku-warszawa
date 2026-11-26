@@ -412,3 +412,37 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
 .character-form-grid .secret-input textarea{border-color:#674e40;background:#171312}
 @media(max-width:850px){.character-list-panel{width:270px;flex-basis:270px}.character-card-content{grid-template-columns:1fr;padding:18px}.character-portrait{position:relative;max-width:280px}.character-portrait>img,.portrait-placeholder{max-height:360px}}
 @media(max-width:620px){.map-app{height:auto;min-height:100vh;overflow:visible}.map-topbar{height:auto;min-height:68px;flex-wrap:wrap;gap:10px;padding:10px 12px}.map-topbar .brand{min-width:auto}.top-tabs{order:3;flex-basis:100%;height:38px;overflow:auto}.top-tabs button{white-space:nowrap;padding:0 10px}.user-tools{margin-left:auto}.character-workspace{flex-direction:column;overflow:visible}.character-list-panel{width:100%;flex-basis:auto;max-height:40vh}.character-card-panel{min-height:60vh}.character-card-content{overflow:visible}.character-fact-grid{grid-template-columns:repeat(3,1fr)}.character-actions{flex-wrap:wrap}.character-form-grid{grid-template-columns:1fr}.character-form-grid .wide{grid-column:auto}}
+
+/* Character card redesign + mechanics */
+.character-card-content{grid-template-columns:minmax(0,1fr) minmax(320px,40%);gap:22px}
+.character-facts{grid-column:1;grid-row:1;max-width:none}
+.character-portrait{grid-column:2;grid-row:1;position:relative;top:auto;max-width:none}
+.character-portrait>img,.portrait-placeholder{aspect-ratio:3/4;max-height:380px;cursor:zoom-in}
+.character-portrait-image{object-fit:cover}
+.character-portrait .mechanical-sheet{margin-top:14px}
+.portrait-lightbox{position:fixed;inset:0;z-index:100;background:#000e;display:flex;align-items:center;justify-content:center;padding:30px;cursor:zoom-out}
+.portrait-lightbox img{max-height:90vh;max-width:90vw;object-fit:contain}
+.portrait-lightbox button{position:absolute;top:18px;right:25px;background:transparent;border:0;color:#eee;font-size:36px}
+.mechanical-sheet{background:#15171b;border:1px solid #383b43;padding:14px;min-width:0}
+.mechanical-sheet>header{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.mechanical-sheet>header small,.mechanical-sheet h3{font:9px 'IBM Plex Mono',monospace;color:#c18a90;letter-spacing:1px}
+.mechanical-sheet>header button,.mechanic-add{background:#913e46;border:1px solid #913e46;color:#fff;padding:8px 10px;font:8px 'IBM Plex Mono',monospace}
+.mechanical-sheet h3{margin:14px 0 8px;border-bottom:1px solid #383b43;padding-bottom:7px}
+.mechanic-group{border:1px solid #383b43;background:#1b1d23;padding:9px;margin:8px 0}
+.mechanic-group h4,.mechanic-entry-column h4{font:9px 'IBM Plex Mono',monospace;color:#c18a90;letter-spacing:.8px;margin:0 0 7px}
+.mechanic-row{display:flex;align-items:center;justify-content:space-between;gap:7px;padding:6px 0;border-top:1px solid #30333b}
+.mechanic-row:first-of-type{border-top:0}
+.mechanic-row>span{font:11px 'IBM Plex Sans',sans-serif;color:#ddd;min-width:0}
+.mechanic-dots{display:flex;gap:3px;flex-shrink:0}
+.mechanic-dots button{padding:0;border:0;background:none;color:#56565c;font-size:12px;line-height:1}
+.mechanic-dots button.filled{color:#c18a90}
+.mechanic-entry-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.mechanic-entry-column{min-width:0;border:1px solid #383b43;padding:8px;background:#1b1d23}
+.mechanic-entry{display:grid;gap:6px;margin:8px 0;padding:7px;background:#121419;border:1px solid #30333b}
+.mechanic-entry input,.mechanic-entry textarea{min-width:0;width:100%;background:#101114;border:1px solid #41444d;color:#e5e1d8;padding:7px;font:10px 'IBM Plex Sans',sans-serif}
+.mechanic-entry textarea{resize:vertical}
+.mechanic-remove{background:transparent;border:1px solid #74434a;color:#e0a7ac;padding:5px;font:8px 'IBM Plex Mono',monospace}
+.mechanic-add{width:100%;margin-top:6px}
+.mechanics-loading{padding:12px;color:#a5a5a8;font:9px 'IBM Plex Mono',monospace}
+@media(max-width:1100px){.character-card-content{grid-template-columns:minmax(0,1fr) minmax(290px,42%)}.mechanic-entry-columns{grid-template-columns:1fr}}
+@media(max-width:850px){.character-card-content{grid-template-columns:1fr}.character-facts,.character-portrait{grid-column:1;grid-row:auto}.character-portrait{max-width:300px}.mechanic-entry-columns{grid-template-columns:1fr}}
