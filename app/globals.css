@@ -603,3 +603,21 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
 @media(max-width:900px){
  .character-mechanics-full .mechanic-attributes,.character-mechanics-full .mechanic-skills{grid-template-columns:1fr!important}
 }
+
+/* Reduce the portrait/mechanics rail width to avoid oversized mechanical columns */
+.character-card-content{
+ grid-template-columns:minmax(0,1fr) minmax(580px,760px)!important;
+ justify-content:space-between!important;
+ gap:18px!important;
+}
+.character-portrait{width:100%!important;max-width:760px!important;justify-self:end!important}
+.character-portrait>img,.portrait-placeholder{width:100%!important;max-height:320px!important;aspect-ratio:16/9!important}
+.character-mechanics-full{width:100%!important;max-width:760px!important;justify-self:end!important;grid-column:2!important}
+.character-mechanics-full .mechanic-attributes,
+.character-mechanics-full .mechanic-skills{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+.character-mechanics-full .mechanic-group{max-width:none!important;min-width:0!important}
+@media(max-width:900px){
+ .character-card-content{grid-template-columns:1fr!important}
+ .character-portrait,.character-mechanics-full{max-width:none!important;grid-column:1!important}
+ .character-mechanics-full .mechanic-attributes,.character-mechanics-full .mechanic-skills{grid-template-columns:1fr!important}
+}
