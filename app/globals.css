@@ -654,3 +654,31 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
 @media(max-width:900px){
  .character-card-content{grid-template-columns:1fr!important;grid-template-areas:"facts" "portrait" "mechanics"!important}
 }
+
+/* Final visual harmonization: mechanical card follows the character-file palette */
+.character-mechanics-full .mechanical-sheet,
+.character-mechanics-full .mechanic-group{
+ background:#0d100f!important;
+ color:#ded5c5!important;
+ border-color:#34362f!important;
+ box-shadow:none!important;
+}
+.character-mechanics-full .mechanical-sheet{border:1px solid #34362f!important}
+.character-mechanics-full .mechanic-group{border:1px solid #34362f!important}
+.character-mechanics-full h3,.character-mechanics-full h4,
+.character-mechanics-full .mechanic-group>div:first-child{
+ color:#b99a69!important;
+}
+.character-mechanics-full .mechanic-row{border-color:#34362f!important}
+.character-mechanics-full .mechanic-row>span{color:#ded5c5!important;font-size:15px!important}
+.character-mechanics-full .mechanic-dots button{color:#8d7960!important}
+.character-mechanics-full .mechanic-dots button[aria-pressed="true"],
+.character-mechanics-full .mechanic-dots button.active{color:#c4aa7c!important}
+/* Increase readability of the descriptive side */
+.character-facts>h1{font-size:clamp(36px,4.2vw,54px)!important}
+.character-fact-grid b{font-size:15px!important}
+.character-fact-grid small,.character-section>small,.character-secret>small{font-size:10px!important;letter-spacing:1.1px!important}
+.character-section p,.character-secret p{font-size:17px!important;line-height:1.75!important}
+.membership-row{font-size:14px!important}
+.membership-row span{font-size:11px!important}
+.character-alias{font-size:20px!important}
