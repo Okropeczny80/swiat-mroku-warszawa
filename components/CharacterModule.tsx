@@ -157,6 +157,7 @@ export default function CharacterModule({ session, onMessage }: { session: any; 
         <div className="character-portrait">
           {photos.find(p => p.is_primary) && photoUrls[photos.find(p => p.is_primary)!.id] ? <img className="character-portrait-image" onClick={() => setPortraitZoom(photoUrls[photos.find(p => p.is_primary)!.id])} src={photoUrls[photos.find(p => p.is_primary)!.id]} alt={"Portret: " + selected.display_name} /> : <div className="portrait-placeholder"><span>WARSZAWA ’97</span><b>{selected.display_name.slice(0,1).toLocaleUpperCase("pl")}</b><small>PORTRET NIEUSTALONY</small></div>}
           <label className="portrait-upload">＋ DODAJ / ZMIEŃ PORTRET<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" disabled={photoBusy} onChange={e => { const f=e.target.files?.[0] || null; void uploadPortrait(f); e.currentTarget.value=""; }} /></label>
+          <MechanicalSheet characterId={selected.id} onMessage={onMessage} />
         </div>
         <div className="character-facts">
           <div className="character-kicker">{selected.character_types?.name || "TYP NIEUSTALONY"} <span>WARSZAWA · 1997</span></div>
@@ -171,6 +172,7 @@ export default function CharacterModule({ session, onMessage }: { session: any; 
         </div>
       </div> : <div className="character-empty-card"><span>✧</span><h3>Brak wybranej postaci</h3><p>Wybierz osobę z rejestru albo utwórz nową kartę.</p><button onClick={openNew}>＋ UTWÓRZ KARTĘ POSTACI</button></div>}
     </section>
+    {portraitZoom && <div className="portrait-lightbox" onClick={() => setPortraitZoom(null)}><button onClick={() => setPortraitZoom(null)}>×</button><img src={portraitZoom} alt="Powiększony portret" /></div>}
     {editor && <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) setEditor(false); }}><form className="character-editor" onSubmit={save}>
       <div className="editor-heading"><div><small>ARCHIWUM / NOWY WPIS</small><h2>{(form as any).id ? "Edytuj postać" : "Nowa postać"}</h2></div><button type="button" onClick={() => setEditor(false)}>×</button></div>
       <div className="character-form-grid">
