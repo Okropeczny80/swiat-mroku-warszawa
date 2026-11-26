@@ -579,3 +579,27 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
 }
 .character-mechanics-full .mechanic-group{padding:7px!important}
 @media(max-width:1200px){.character-card-content{grid-template-columns:minmax(260px,.65fr) minmax(440px,1.35fr)!important}}
+
+/* Final compact mechanics groups: avoid stretched label-to-dot gaps */
+.character-mechanics-full .mechanic-attributes,
+.character-mechanics-full .mechanic-skills{
+ display:grid!important;
+ grid-template-columns:repeat(3,minmax(240px,320px))!important;
+ justify-content:space-between!important;
+ column-gap:14px!important;
+}
+.character-mechanics-full .mechanic-group{width:100%!important;max-width:320px!important}
+.character-mechanics-full .mechanic-row{
+ display:grid!important;grid-template-columns:max-content max-content!important;
+ justify-content:space-between!important;align-items:center!important;column-gap:10px!important;
+}
+.character-mechanics-full .mechanic-row>span{width:auto!important;flex:none!important;text-align:left!important}
+.character-mechanics-full .mechanic-dots{width:74px!important;display:flex!important;justify-content:space-between!important;gap:0!important;margin:0!important}
+.character-mechanics-full .mechanic-dots button{width:12px!important;min-width:12px!important}
+@media(max-width:1200px){
+ .character-mechanics-full .mechanic-attributes,.character-mechanics-full .mechanic-skills{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+ .character-mechanics-full .mechanic-group{max-width:none!important}
+}
+@media(max-width:900px){
+ .character-mechanics-full .mechanic-attributes,.character-mechanics-full .mechanic-skills{grid-template-columns:1fr!important}
+}
