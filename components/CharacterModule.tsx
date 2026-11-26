@@ -139,6 +139,24 @@ export default function CharacterModule({ session, onMessage }: { session: any; 
     if (clear.error || main.error) onMessage("Nie udało się zmienić portretu: " + (clear.error || main.error)?.message);
     else setPhotoRefresh(v => v + 1);
   }
+  async function deletePhoto(photo: CharacterPhoto) {
+    if (!supabase || !selected || photoBusy) return;
+    if (!window.confirm("Usunąć ten obraz z galerii postaci?")) return;
+    setPhotoBusy(true);
+    const replacement = photos.find(p => p.id !== photo.id);
+    if (photo.is_primary && replacement) {
+      const { error: primaryError } = await supabase.from("character_photos").update({ is_primary: true, updated_at: new Date().toISOString() }).eq("id", replacement.id);
+      if (primaryError) { setPhotoBusy(false); onMessage("Nie udało się wybrać nowego portretu głównego: " + primaryError.message); return; }
+    }
+    const { error: deleteError } = await supabase.from("character_photos").update({ deleted_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq("id", photo.id);
+    if (deleteError) { setPhotoBusy(false); onMessage("Nie udało się usunąć obrazu z galerii: " + deleteError.message); return; }
+    const { error: storageError } = await supabase.storage.from("world-assets").remove([photo.storage_path]);
+    setPhotoBusy(false);
+    if (storageError) onMessage("Obraz usunięto z galerii, ale plik pozostał w magazynie: " + storageError.message);
+    else onMessage("Usunięto obraz z galerii.");
+    setCropSettings(current => { const next={...current}; delete next[photo.id]; try { localStorage.setItem('wm97-character-crops',JSON.stringify(next)); } catch {} return next; });
+    setPhotoRefresh(v => v + 1);
+  }
   async function softDelete() {
     if (!supabase || !selected || !window.confirm("Przenieść tę postać do kosza? Powiązania pozostaną w bazie.")) return;
     const { error } = await supabase.from("characters").update({ deleted_at: new Date().toISOString(), deleted_by: session.user.id, deletion_reason: "Usunięto z karty postaci" }).eq("id", selected.id);
@@ -172,7 +190,7 @@ export default function CharacterModule({ session, onMessage }: { session: any; 
           <div className="character-fact-grid"><div><small>WIEK</small><b>{selected.age ?? "Nieznany"}</b></div><div><small>ZAWÓD</small><b>{selected.occupation || "Nieustalony"}</b></div><div><small>STATUS</small><b>{selected.status}</b></div></div>
           <section className="character-section"><small>BIOGRAFIA / HISTORIA</small><p>{selected.biography || "Brak wpisu w aktach osobowych."}</p></section>
           <section className="character-section"><small>PRZYNALEŻNOŚĆ ORGANIZACYJNA</small>{memberships.length ? memberships.map(m => <div className="membership-row" key={m.id}><b>{m.organizations?.name || "Organizacja bez nazwy"}</b><span>{m.role_title || "Bez funkcji"} · {m.membership_status}</span></div>) : <p>Brak zarejestrowanych przynależności.</p>}</section>
-          <section className="character-section character-gallery"><small>GALERIA / PORTRETY DODATKOWE</small><div className="character-photo-strip">{photos.map(p => <button key={p.id} className={p.is_primary ? "is-primary" : ""} onClick={() => !p.is_primary && void setPrimary(p)} title={p.is_primary ? "Portret główny" : "Ustaw jako portret główny"}>{photoUrls[p.id] ? <img src={photoUrls[p.id]} alt={p.caption || "Portret postaci"} /> : "…"}</button>)}{!photos.length && <p>Brak fotografii w galerii.</p>}</div></section>
+          <section className="character-section character-gallery"><small>GALERIA / PORTRETY DODATKOWE</small><div className="character-photo-strip">{photos.map(p => <div key={p.id} className={"character-photo-item" + (p.is_primary ? " is-primary" : "")}><button type="button" className="character-photo-select" disabled={photoBusy} onClick={() => !p.is_primary && void setPrimary(p)} title={p.is_primary ? "Portret główny" : "Ustaw jako portret główny"}>{photoUrls[p.id] ? <img src={photoUrls[p.id]} alt={p.caption || "Portret postaci"} /> : "…"}</button><button type="button" className="character-photo-delete" disabled={photoBusy} onClick={() => void deletePhoto(p)} title="Usuń obraz z galerii">×</button>{p.is_primary && <span className="character-photo-label">GŁÓWNY</span>}</div>)}{!photos.length && <p>Brak fotografii w galerii.</p>}</div></section>
           <section className="character-secret"><small>◈ TAJNE / NOTATKI WYŁĄCZNIE DLA MG</small><p>{selected.gm_notes || "Brak poufnych notatek."}</p></section>
           <div className="character-actions"><button onClick={openEdit}>EDYTUJ KARTĘ</button><button onClick={softDelete}>PRZENIEŚ DO KOSZA</button></div>
         </div>
