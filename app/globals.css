@@ -493,3 +493,38 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
  .character-facts,.character-portrait,.character-mechanics-full{grid-column:1!important;grid-row:auto!important}
  .character-mechanics-full .mechanic-entry-columns{grid-template-columns:repeat(3,minmax(0,1fr))!important}
 }
+
+/* REFERENCE-FAITHFUL CHARACTER LAYOUT — right-side three-column mechanics */
+.character-card-content{grid-template-columns:minmax(260px,.42fr) minmax(580px,1fr)!important;gap:18px!important;align-items:start!important;padding:20px 20px 30px!important}
+.character-facts{grid-column:1!important;grid-row:1!important;max-width:none!important}
+.character-portrait{grid-column:2!important;grid-row:1!important;position:static!important;max-width:none!important}
+.character-portrait>img,.portrait-placeholder{aspect-ratio:16/9!important;max-height:350px!important;cursor:zoom-in}
+.character-mechanics-full{grid-column:2!important;grid-row:2!important;width:100%!important;min-width:0!important;margin-top:14px!important}
+.character-mechanics-full .mechanical-sheet{padding:12px!important;background:#17191e!important;border:1px solid #5b5057!important}
+.character-mechanics-full .mechanical-sheet>header{padding:2px 1px 10px!important;border-bottom:1px solid #45434b!important}
+.character-mechanics-full .mechanical-sheet>header small{font-size:10px!important;color:#d18b91!important}
+.character-mechanics-full .mechanical-sheet>header button{background:#913e46!important;border-color:#913e46!important;padding:10px 14px!important;font-size:9px!important}
+.character-mechanics-full .mechanic-attributes,.character-mechanics-full .mechanic-skills{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important}
+.character-mechanics-full .mechanic-attributes>h3,.character-mechanics-full .mechanic-skills>h3{grid-column:1/-1!important;margin:8px 0 3px!important;padding:0 0 8px!important;color:#d18b91!important;border-bottom:1px solid #45434b!important}
+.character-mechanics-full .mechanic-group{margin:0!important;padding:8px 9px!important;background:#1d2026!important;border:1px solid #41434b!important;min-width:0!important}
+.character-mechanics-full .mechanic-group h4{margin:0 0 6px!important;padding-bottom:5px!important;color:#d18b91!important;font-size:9px!important}
+.character-mechanics-full .mechanic-row{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:5px!important;padding:6px 1px!important}
+.character-mechanics-full .mechanic-row>span{flex:0 1 auto!important;min-width:0!important;font-size:11px!important;color:#e5e1d8!important}
+.character-mechanics-full .mechanic-dots{display:flex!important;gap:2px!important;flex:0 0 auto!important;margin-left:3px!important}
+.character-mechanics-full .mechanic-dots button{width:14px!important;height:17px!important;font-size:12px!important;padding:0!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;color:#62646e!important;cursor:pointer!important}
+.character-mechanics-full .mechanic-dots button.filled{color:#ce7078!important}
+.character-mechanics-full .mechanic-dots button:hover{color:#e2a0a4!important;transform:scale(1.1)!important}
+.character-mechanics-full .mechanic-entry-columns{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important;margin-top:12px!important}
+.character-mechanics-full .mechanic-entry-column{padding:9px!important;background:#1d2026!important;border:1px solid #41434b!important}
+.character-mechanics-full .mechanic-entry-column h4{color:#d18b91!important}
+.character-mechanics-full .mechanic-entry{padding:7px!important;background:#14161b!important;border-color:#41434b!important}
+.character-mechanics-full .mechanic-entry input,.character-mechanics-full .mechanic-entry textarea{font-size:11px!important;padding:8px!important;background:#111318!important}
+@media(max-width:1200px){
+ .character-card-content{grid-template-columns:minmax(230px,.4fr) minmax(460px,1fr)!important}
+}
+@media(max-width:900px){
+ .character-card-content{grid-template-columns:1fr!important}
+ .character-facts,.character-portrait,.character-mechanics-full{grid-column:1!important;grid-row:auto!important}
+ .character-mechanics-full .mechanic-attributes,.character-mechanics-full .mechanic-skills{grid-template-columns:1fr!important}
+ .character-mechanics-full .mechanic-entry-columns{grid-template-columns:1fr!important}
+}
