@@ -775,3 +775,8 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
 .portrait-crop-controls input[type=range]{grid-column:1/-1;width:100%;accent-color:#b99a69}
 .crop-reset,.portrait-crop-modal footer button{padding:9px 12px;background:transparent;border:1px solid var(--line);color:var(--paper);font:10px 'IBM Plex Mono',monospace}
 @media(max-width:600px){.portrait-crop-backdrop{padding:8px}.portrait-crop-modal{padding:12px}.portrait-crop-preview{height:45vh}}
+
+/* Portrait format standardized to landscape 4:3 for easier crop of varied source images */
+.character-portrait>img,.character-portrait .portrait-placeholder{aspect-ratio:4/3!important;max-height:none!important;width:100%;}
+.portrait-crop-preview{width:min(100%,560px);height:auto!important;aspect-ratio:4/3!important;margin:0 auto;overflow:hidden}
+.portrait-crop-preview img{width:100%;height:100%;object-fit:cover}
