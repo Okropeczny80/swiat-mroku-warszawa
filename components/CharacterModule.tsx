@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import MechanicalSheet from "@/components/MechanicalSheet";
 
 type CharacterType = { id: string; name: string; sort_order: number };
 type Character = {
@@ -28,6 +29,7 @@ export default function CharacterModule({ session, onMessage }: { session: any; 
   const [saving, setSaving] = useState(false);
   const [photoBusy, setPhotoBusy] = useState(false);
   const [photoRefresh, setPhotoRefresh] = useState(0);
+  const [portraitZoom, setPortraitZoom] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     if (!supabase) return;
@@ -153,7 +155,7 @@ export default function CharacterModule({ session, onMessage }: { session: any; 
       <div className="panel-heading"><div><small>AKTA OSOBOWE / DOSTĘP MG</small><h2>{selected?.display_name || "Karta postaci"}</h2></div>{selected && <span className="character-record-state">{selected.status === "active" ? "AKTYWNA" : selected.status.toUpperCase()}</span>}</div>
       {selected ? <div className="character-card-content">
         <div className="character-portrait">
-          {photos.find(p => p.is_primary) && photoUrls[photos.find(p => p.is_primary)!.id] ? <img src={photoUrls[photos.find(p => p.is_primary)!.id]} alt={"Portret: " + selected.display_name} /> : <div className="portrait-placeholder"><span>WARSZAWA ’97</span><b>{selected.display_name.slice(0,1).toLocaleUpperCase("pl")}</b><small>PORTRET NIEUSTALONY</small></div>}
+          {photos.find(p => p.is_primary) && photoUrls[photos.find(p => p.is_primary)!.id] ? <img className="character-portrait-image" onClick={() => setPortraitZoom(photoUrls[photos.find(p => p.is_primary)!.id])} src={photoUrls[photos.find(p => p.is_primary)!.id]} alt={"Portret: " + selected.display_name} /> : <div className="portrait-placeholder"><span>WARSZAWA ’97</span><b>{selected.display_name.slice(0,1).toLocaleUpperCase("pl")}</b><small>PORTRET NIEUSTALONY</small></div>}
           <label className="portrait-upload">＋ DODAJ / ZMIEŃ PORTRET<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" disabled={photoBusy} onChange={e => { const f=e.target.files?.[0] || null; void uploadPortrait(f); e.currentTarget.value=""; }} /></label>
         </div>
         <div className="character-facts">
