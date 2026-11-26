@@ -200,3 +200,15 @@ Wniosek: przeglądarka dociera do właściwego Supabase i wywołuje właściwy e
 - Vercel production deployment dla commitu `dc7afcc` był widziany jako QUEUED; wdrożenie i test na produkcji nie są potwierdzone w chwili zapisu.
 - Użytkownik obejrzał efekt i potwierdził: „teraz wygląda dobrze”.
 - Następna sesja: sprawdzić status Vercel dla `dc7afcc`, a po READY potwierdzić widoczność pustych i pełnych kropek w aplikacji. Nie zmieniać wyglądu bez potrzeby.
+
+
+## Karta postaci — zakończenie korekt galerii i portretu (2026-11-26)
+- Portret i podgląd kadrowania ujednolicono do proporcji 4:3.
+- Dodano edytor kadrowania z ustawieniem poziomego/pionowego przesunięcia i zoomu (slider); preferencje crop są zapisywane lokalnie w przeglądarce, nie synchronizują się między urządzeniami.
+- Galeria postaci ma kontrolki usuwania: rekord zdjęcia otrzymuje deleted_at, plik Storage jest usuwany; jeśli usuwany portret jest główny, kolejny obraz ma zostać ustawiony jako główny.
+- Krzyżyk usuwania początkowo był zbyt duży. Użytkownik pokazał zrzut i zaakceptował poprawkę CSS 22×22 px, dyskretną w prawym górnym rogu.
+- Commity: 68b3a51 (format 4:3), 2ad02f9 (kontrolki usuwania galerii), aeafb74 (style), 02dda44 (zmniejszenie przycisku usuwania).
+- Użytkownik potwierdził: „teraz jest ok”.
+- Status deploymentu ostatniej poprawki: Vercel BUILDING przy sprawdzeniu; produkcyjnego READY nie potwierdzono.
+- Nie zmieniać już zaakceptowanego wyglądu portretu, crop ani galerii bez prośby użytkownika.
+- Następny moduł: FRAKCJE/ORGANIZACJE. Przed implementacją wykonać audyt istniejących tabel organizations i organization_memberships, obecnego fragmentu przynależności na kartach postaci oraz UI/nawigacji; dopiero potem uzgodnić zakres i wygląd. Nie zakładać, że osobny moduł frakcji już istnieje.
