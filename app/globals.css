@@ -549,3 +549,33 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
  width:14px!important;
  min-width:14px!important;
 }
+
+/* Align labels left and dot controls right within compact row; reduce right-panel dominance */
+.character-card-content{grid-template-columns:minmax(320px,.7fr) minmax(500px,1.3fr)!important;gap:16px!important}
+.character-mechanics-full .mechanic-row{
+ display:grid!important;
+ grid-template-columns:minmax(0,1fr) auto!important;
+ justify-content:stretch!important;
+ align-items:center!important;
+ column-gap:8px!important;
+}
+.character-mechanics-full .mechanic-row>span{
+ text-align:left!important;
+ min-width:0!important;
+}
+.character-mechanics-full .mechanic-dots{
+ justify-self:end!important;
+ display:flex!important;
+ justify-content:space-between!important;
+ width:88px!important;
+ gap:0!important;
+ margin:0!important;
+}
+.character-mechanics-full .mechanic-dots button{
+ width:14px!important;
+ min-width:14px!important;
+ text-align:center!important;
+ padding:0!important;
+}
+.character-mechanics-full .mechanic-group{padding:7px!important}
+@media(max-width:1200px){.character-card-content{grid-template-columns:minmax(260px,.65fr) minmax(440px,1.35fr)!important}}
