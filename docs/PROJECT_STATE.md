@@ -178,3 +178,15 @@ Wniosek: przeglądarka dociera do właściwego Supabase i wywołuje właściwy e
 - Zauważona drobna poprawka: statusy techniczne typu active powinny być prezentowane po polsku (np. Aktywna).
 - Dalsze pomysły zgłoszone do rozważenia: pseudonim wyraźniej wyróżniony, powiększanie portretu, dodawanie przynależności organizacyjnych z karty, późniejsze pokazanie relacji z innymi postaciami.
 - Następny krok: na początku kolejnej sesji wrócić do karty mechanicznej i źródłowego arkusza współczynników; nie zaczynać kolejnego modułu menu przed uzgodnieniem brakującej części.
+
+
+## Karta mechaniczna i redesign postaci — 26.11.2026
+- Przeniesiono portret do prawej kolumny, zmniejszono go i dodano kliknięcie do powiększenia.
+- W lewej kolumnie pozostają opisowe informacje, biografia, organizacje, galeria i notatki MG.
+- Nowy komponent `components/MechanicalSheet.tsx` zawiera Atrybuty, Umiejętności i trzy listy Atuty/Wady/Moce.
+- Atrybuty: 9 pozycji w 3 grupach, wartości 0–5 ustawiane kliknięciem.
+- Umiejętności: 3 grupy po 8 pozycji, wartości 0–5. Nazwy umiejętności w obecnej implementacji to standardowa lista robocza i wymagają porównania z polską kartą źródłową użytkownika.
+- Atuty, Wady i Moce: niezależne listy dowolnych wpisów; nazwa, opcjonalna wartość i opis, dodawanie/usuwanie.
+- Supabase: dodano tabelę `character_mechanics` z JSONB dla atrybutów, umiejętności i list, kluczem character_id oraz RLS/polityką opartą o `private.is_active_gm()`; nie zmieniano innych tabel ani danych.
+- Komponent mechaniczny zapisuje przez upsert do tej tabeli.
+- Zmiany zapisano bezpośrednio na `main`; build/deployment i test zalogowanego end-to-end wymagają potwierdzenia.
