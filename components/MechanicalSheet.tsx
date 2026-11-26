@@ -7,7 +7,7 @@ const groups = [
  {key:"finesse",title:"FINEZJA",names:["Czujność","Zręczność","Manipulacja"]},
  {key:"resistance",title:"ODPORNOŚĆ",names:["Determinacja","Wytrzymałość","Opanowanie"]}
 ];
-const skillGroups=[{key:"mental",title:"MENTALNE",names:["Nauka","Komputery","Rzemiosło","Śledztwo","Medycyna","Okultyzm","Polityka","Nauki ścisłe"]},{key:"physical",title:"FIZYCZNE",names:["Atletyka","Bijatyka","Prowadzenie","Broń palna","Kradzież","Skradanie","Przetrwanie","Broń biała"]},{key:"social",title:"SPOŁECZNE",names:["Opieka nad zwierzętami","Empatia","Ekspresja","Zastraszanie","Perswazja","Towarzyskość","Znajomości uliczne","Podstęp"]}];
+const skillGroups=[{key:"mental",title:"MENTALNE",names:["Dedukcja","Informatyka","Medycyna","Nauka","Okultyzm","Polityka","Rzemiosło","Wykształcenie"]},{key:"physical",title:"FIZYCZNE",names:["Bijatyka","Broń Biała","Broń Palna","Prowadzenie","Przetrwanie","Skradanie się","Wysportowanie","Złodziejstwo"]},{key:"social",title:"SPOŁECZNE",names:["Ekspresja","Empatia","Obycie","Oszustwo","Perswazja","Półświatek","Zastraszanie","Zwierzęta"]}];
 type Entry={id:string,name:string,value:string,description:string};
 const blankEntry=():Entry=>({id:crypto.randomUUID(),name:"",value:"",description:""});
 export default function MechanicalSheet({characterId,onMessage}:{characterId:string,onMessage:(m:string)=>void}){
