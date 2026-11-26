@@ -472,3 +472,24 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
  .character-mechanics-full{grid-column:1!important;grid-row:auto!important}
  .character-mechanics-full .mechanic-attributes,.character-mechanics-full .mechanic-skills{grid-template-columns:1fr}
 }
+
+/* Correct compact right-column mechanics layout */
+.character-card-content{grid-template-columns:minmax(0,1.45fr) minmax(420px,1fr)!important;gap:18px!important;align-items:start!important}
+.character-facts{grid-column:1!important;grid-row:1!important}
+.character-portrait{grid-column:2!important;grid-row:1!important;position:static!important}
+.character-mechanics-full{grid-column:2!important;grid-row:2!important;width:100%!important;min-width:0!important;margin-top:12px}
+.character-mechanics-full .mechanical-sheet{padding:12px!important}
+.character-mechanics-full .mechanic-attributes,.character-mechanics-full .mechanic-skills{display:block!important}
+.character-mechanics-full .mechanic-attributes>h3,.character-mechanics-full .mechanic-skills>h3{margin:10px 0 7px}
+.character-mechanics-full .mechanic-group{margin:7px 0!important;padding:8px!important}
+.character-mechanics-full .mechanic-row{justify-content:flex-start!important;gap:12px!important;padding:5px 3px!important}
+.character-mechanics-full .mechanic-row>span{flex:1 1 auto!important;font-size:11px!important}
+.character-mechanics-full .mechanic-dots{margin-left:auto!important;gap:4px!important;flex:0 0 auto!important}
+.character-mechanics-full .mechanic-dots button{font-size:13px!important;width:16px!important;height:18px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important}
+.character-mechanics-full .mechanic-entry-columns{grid-template-columns:1fr!important;gap:8px!important}
+.character-mechanics-full .mechanic-entry-column{padding:8px!important}
+@media(max-width:1050px){
+ .character-card-content{grid-template-columns:1fr!important}
+ .character-facts,.character-portrait,.character-mechanics-full{grid-column:1!important;grid-row:auto!important}
+ .character-mechanics-full .mechanic-entry-columns{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
