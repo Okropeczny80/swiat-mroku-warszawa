@@ -108,3 +108,18 @@ Drobne ulepszenia do rozważenia po mechanice: polskie etykiety statusów, pseud
 - Vercel production deployment dla commitu `dc7afcc` był widziany jako QUEUED; wdrożenie i test na produkcji nie są potwierdzone w chwili zapisu.
 - Użytkownik obejrzał efekt i potwierdził: „teraz wygląda dobrze”.
 - Następna sesja: sprawdzić status Vercel dla `dc7afcc`, a po READY potwierdzić widoczność pustych i pełnych kropek w aplikacji. Nie zmieniać wyglądu bez potrzeby.
+
+
+## Zakończenie pracy nad kartą postaci — 26.11.2026
+- Użytkownik zaakceptował portrety w formacie 4:3 oraz edytor kadrowania (przesunięcie X/Y, zoom, reset). Crop zapisywany jest lokalnie w przeglądarce.
+- Dodano usuwanie zdjęć z galerii: potwierdzenie, soft-delete rekordu i usunięcie pliku Storage, wybór kolejnego portretu głównego, gdy usuwany był główny.
+- Przycisk × usuwania został zmniejszony do 22×22 px. Użytkownik pokazał zrzut i zaakceptował poprawkę.
+- Commity tej końcowej serii: `68b3a51` (4:3), `2ad02f9` (funkcja usuwania), `aeafb74` (style), `02dda44` (mały przycisk).
+- Ostatni status Vercel sprawdzony dla `02dda44`: BUILDING. Nie potwierdzono READY produkcji.
+- Nie ruszać zaakceptowanej karty postaci bez wyraźnej potrzeby.
+
+## Następny moduł: FRAKCJE
+- Rozpoczynamy od audytu, nie od zmian kodu.
+- Sprawdzić aktualny kod komponentów i nawigacji, istniejące tabele organizations i organization_memberships oraz sposób, w jaki karta postaci wyświetla przynależności.
+- Rozpoznać, co już istnieje i czego brakuje dla pełnego modułu Frakcje/Organizacje.
+- Najpierw omówić i uzgodnić zakres, UX oraz model danych. Bez zmian schematu, RLS, Storage czy danych przed audytem i zgodą.
