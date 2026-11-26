@@ -190,3 +190,13 @@ Wniosek: przeglądarka dociera do właściwego Supabase i wywołuje właściwy e
 - Supabase: dodano tabelę `character_mechanics` z JSONB dla atrybutów, umiejętności i list, kluczem character_id oraz RLS/polityką opartą o `private.is_active_gm()`; nie zmieniano innych tabel ani danych.
 - Komponent mechaniczny zapisuje przez upsert do tej tabeli.
 - Zmiany zapisano bezpośrednio na `main`; build/deployment i test zalogowanego end-to-end wymagają potwierdzenia.
+
+
+## Korekta wizualna karty mechanicznej — 26.11.2026 (ostatni postęp)
+- Zmieniono kontrolki wartości 0–5: zaznaczone kropki są pełne (`●`), niezaznaczone są puste (`○`), aby oba stany były jednoznaczne.
+- Zachowano kliknięcie ustawiające wartość, układ grup i istniejące dane.
+- Zmiana komponentu `components/MechanicalSheet.tsx`, commit `b683cc9b043700de51b95824f20b866941c1b1d6`.
+- Dodatkowe style w `app/globals.css`, commit `dc7afccf18225cb2a62c8ab8a6d07cf342f044ee`.
+- Vercel production deployment dla commitu `dc7afcc` był widziany jako QUEUED; wdrożenie i test na produkcji nie są potwierdzone w chwili zapisu.
+- Użytkownik obejrzał efekt i potwierdził: „teraz wygląda dobrze”.
+- Następna sesja: sprawdzić status Vercel dla `dc7afcc`, a po READY potwierdzić widoczność pustych i pełnych kropek w aplikacji. Nie zmieniać wyglądu bez potrzeby.
