@@ -30,6 +30,11 @@ export default function CharacterModule({ session, onMessage }: { session: any; 
   const [photoBusy, setPhotoBusy] = useState(false);
   const [photoRefresh, setPhotoRefresh] = useState(0);
   const [portraitZoom, setPortraitZoom] = useState<string | null>(null);
+  const [cropEditor, setCropEditor] = useState<string | null>(null);
+  const [cropSettings, setCropSettings] = useState<Record<string, {x:number;y:number;scale:number}>>({});
+  const defaultCrop = {x:50,y:50,scale:1};
+  const cropFor = (photoId:string) => cropSettings[photoId] || defaultCrop;
+  function saveCrop(photoId:string, crop:{x:number;y:number;scale:number}) { const next={...cropSettings,[photoId]:crop}; setCropSettings(next); try { localStorage.setItem('wm97-character-crops',JSON.stringify(next)); } catch {} }
 
   const load = useCallback(async () => {
     if (!supabase) return;
@@ -44,6 +49,7 @@ export default function CharacterModule({ session, onMessage }: { session: any; 
   }, [onMessage]);
 
   useEffect(() => { void load(); }, [load]);
+  useEffect(() => { try { const saved=localStorage.getItem('wm97-character-crops'); if(saved) setCropSettings(JSON.parse(saved)); } catch {} }, []);
 
   const selected = characters.find(c => c.id === selectedId) || null;
   useEffect(() => {
@@ -155,8 +161,9 @@ export default function CharacterModule({ session, onMessage }: { session: any; 
       <div className="panel-heading"><div><small>AKTA OSOBOWE / DOSTĘP MG</small><h2>{selected?.display_name || "Karta postaci"}</h2></div>{selected && <span className="character-record-state">{selected.status === "active" ? "AKTYWNA" : selected.status.toUpperCase()}</span>}</div>
       {selected ? <div className="character-card-content">
         <div className="character-portrait">
-          {photos.find(p => p.is_primary) && photoUrls[photos.find(p => p.is_primary)!.id] ? <img className="character-portrait-image" onClick={() => setPortraitZoom(photoUrls[photos.find(p => p.is_primary)!.id])} src={photoUrls[photos.find(p => p.is_primary)!.id]} alt={"Portret: " + selected.display_name} /> : <div className="portrait-placeholder"><span>WARSZAWA ’97</span><b>{selected.display_name.slice(0,1).toLocaleUpperCase("pl")}</b><small>PORTRET NIEUSTALONY</small></div>}
+          {photos.find(p => p.is_primary) && photoUrls[photos.find(p => p.is_primary)!.id] ? <img className="character-portrait-image" onClick={() => setPortraitZoom(photoUrls[photos.find(p => p.is_primary)!.id])} src={photoUrls[photos.find(p => p.is_primary)!.id]} alt={"Portret: " + selected.display_name} style={{objectPosition:cropFor(photos.find(p => p.is_primary)!.id).x+'% '+cropFor(photos.find(p => p.is_primary)!.id).y+'%',transform:'scale('+cropFor(photos.find(p => p.is_primary)!.id).scale+')'}} /> : <div className="portrait-placeholder"><span>WARSZAWA ’97</span><b>{selected.display_name.slice(0,1).toLocaleUpperCase("pl")}</b><small>PORTRET NIEUSTALONY</small></div>}
           <label className="portrait-upload">＋ DODAJ / ZMIEŃ PORTRET<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" disabled={photoBusy} onChange={e => { const f=e.target.files?.[0] || null; void uploadPortrait(f); e.currentTarget.value=""; }} /></label>
+          {photos.find(p=>p.is_primary) && <button type="button" className="portrait-crop-trigger" onClick={()=>setCropEditor(photos.find(p=>p.is_primary)!.id)}>✦ KADRUJ PORTRET</button>}
         </div>
         <div className="character-facts">
           <div className="character-kicker">{selected.character_types?.name || "TYP NIEUSTALONY"} <span>WARSZAWA · 1997</span></div>
@@ -173,6 +180,7 @@ export default function CharacterModule({ session, onMessage }: { session: any; 
       </div> : <div className="character-empty-card"><span>✧</span><h3>Brak wybranej postaci</h3><p>Wybierz osobę z rejestru albo utwórz nową kartę.</p><button onClick={openNew}>＋ UTWÓRZ KARTĘ POSTACI</button></div>}
     </section>
     {portraitZoom && <div className="portrait-lightbox" onClick={() => setPortraitZoom(null)}><button onClick={() => setPortraitZoom(null)}>×</button><img src={portraitZoom} alt="Powiększony portret" /></div>}
+    {cropEditor && photoUrls[cropEditor] && <div className="portrait-crop-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)setCropEditor(null)}}><div className="portrait-crop-modal"><header><small>KADROWANIE PORTRETU</small><button type="button" onClick={()=>setCropEditor(null)}>×</button></header><div className="portrait-crop-preview"><img src={photoUrls[cropEditor]} alt="Podgląd kadru" style={{objectPosition:cropFor(cropEditor).x+'% '+cropFor(cropEditor).y+'%',transform:'scale('+cropFor(cropEditor).scale+')'}} /></div><div className="portrait-crop-controls"><label>POZIOME PRZESUNIĘCIE <span>{cropFor(cropEditor).x}%</span><input type="range" min="0" max="100" value={cropFor(cropEditor).x} onChange={e=>saveCrop(cropEditor,{...cropFor(cropEditor),x:Number(e.target.value)})}/></label><label>PIONOWE PRZESUNIĘCIE <span>{cropFor(cropEditor).y}%</span><input type="range" min="0" max="100" value={cropFor(cropEditor).y} onChange={e=>saveCrop(cropEditor,{...cropFor(cropEditor),y:Number(e.target.value)})}/></label><label>POWIĘKSZENIE <span>{cropFor(cropEditor).scale.toFixed(1)}×</span><input type="range" min="1" max="3" step="0.05" value={cropFor(cropEditor).scale} onChange={e=>saveCrop(cropEditor,{...cropFor(cropEditor),scale:Number(e.target.value)})}/></label><button type="button" className="crop-reset" onClick={()=>saveCrop(cropEditor,defaultCrop)}>RESET KADRU</button></div><footer><button type="button" onClick={()=>setCropEditor(null)}>ZAMKNIJ</button></footer></div></div>}
     {editor && <div className="modal-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) setEditor(false); }}><form className="character-editor" onSubmit={save}>
       <div className="editor-heading"><div><small>ARCHIWUM / NOWY WPIS</small><h2>{(form as any).id ? "Edytuj postać" : "Nowa postać"}</h2></div><button type="button" onClick={() => setEditor(false)}>×</button></div>
       <div className="character-form-grid">
