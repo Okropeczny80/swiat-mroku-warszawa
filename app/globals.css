@@ -446,3 +446,29 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
 .mechanics-loading{padding:12px;color:#a5a5a8;font:9px 'IBM Plex Mono',monospace}
 @media(max-width:1100px){.character-card-content{grid-template-columns:minmax(0,1fr) minmax(290px,42%)}.mechanic-entry-columns{grid-template-columns:1fr}}
 @media(max-width:850px){.character-card-content{grid-template-columns:1fr}.character-facts,.character-portrait{grid-column:1;grid-row:auto}.character-portrait{max-width:300px}.mechanic-entry-columns{grid-template-columns:1fr}}
+
+/* Layout refinement: description/portrait above, mechanics across full width */
+.character-card-content{display:grid!important;grid-template-columns:minmax(0,1.65fr) minmax(260px,.85fr)!important;align-items:start!important;gap:22px!important}
+.character-facts{grid-column:1!important;grid-row:1!important}
+.character-portrait{grid-column:2!important;grid-row:1!important;position:static!important;max-width:none!important}
+.character-mechanics-full{grid-column:1 / -1!important;grid-row:2!important;width:100%;min-width:0}
+.character-mechanics-full .mechanical-sheet{padding:22px}
+.character-mechanics-full .mechanic-attributes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.character-mechanics-full .mechanic-attributes>h3{grid-column:1/-1}
+.character-mechanics-full .mechanic-group{margin:0}
+.character-mechanics-full .mechanic-skills{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.character-mechanics-full .mechanic-skills>h3{grid-column:1/-1}
+.character-mechanics-full .mechanic-skills>.mechanic-group{margin:0}
+.character-mechanics-full .mechanic-row{gap:12px;padding:9px 5px}
+.character-mechanics-full .mechanic-row>span{font-size:12px}
+.character-mechanics-full .mechanic-dots{gap:8px}
+.character-mechanics-full .mechanic-dots button{font-size:17px;cursor:pointer;transition:color .12s,transform .12s}
+.character-mechanics-full .mechanic-dots button:hover{transform:scale(1.18);color:#c18a90}
+.character-mechanics-full .mechanic-entry-columns{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.character-mechanics-full .mechanic-entry-column{padding:12px}
+@media(max-width:900px){
+ .character-card-content{grid-template-columns:1fr!important}
+ .character-facts,.character-portrait{grid-column:1!important;grid-row:auto!important}
+ .character-mechanics-full{grid-column:1!important;grid-row:auto!important}
+ .character-mechanics-full .mechanic-attributes,.character-mechanics-full .mechanic-skills{grid-template-columns:1fr}
+}
