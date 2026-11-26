@@ -760,3 +760,18 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
 .character-mechanics-full .mechanic-dots button.empty{color:#b99a69!important;opacity:.65!important}
 .character-mechanics-full .mechanic-dots button.filled{color:#b99a69!important;opacity:1!important}
 .character-mechanics-full .mechanic-dots button{font-size:18px!important;line-height:1!important}
+
+/* Character portrait cropping */
+.character-portrait-image{object-fit:cover;transition:transform .15s ease;cursor:zoom-in;}
+.portrait-crop-trigger{width:100%;padding:10px;background:#101211;border:1px solid var(--line);color:var(--gold);font:10px 'IBM Plex Mono',monospace;letter-spacing:1px;margin-top:5px}
+.portrait-crop-backdrop{position:fixed;inset:0;z-index:70;background:#000d;display:grid;place-items:center;padding:20px}
+.portrait-crop-modal{width:min(720px,100%);max-height:95vh;overflow:auto;background:#101211;border:1px solid var(--line);padding:18px;color:var(--paper)}
+.portrait-crop-modal header,.portrait-crop-modal footer{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:0 0 12px;margin-bottom:12px;color:var(--gold);font:10px 'IBM Plex Mono',monospace}
+.portrait-crop-modal header button{background:transparent;border:0;color:var(--gold);font-size:24px}
+.portrait-crop-preview{height:min(55vh,430px);overflow:hidden;background:#090b0b;border:1px solid var(--line);display:grid;place-items:center}
+.portrait-crop-preview img{width:100%;height:100%;object-fit:cover;transition:transform .1s ease}
+.portrait-crop-controls{display:grid;gap:16px;padding:15px 0}
+.portrait-crop-controls label{display:grid;grid-template-columns:1fr auto;gap:8px;color:var(--gold);font:10px 'IBM Plex Mono',monospace}
+.portrait-crop-controls input[type=range]{grid-column:1/-1;width:100%;accent-color:#b99a69}
+.crop-reset,.portrait-crop-modal footer button{padding:9px 12px;background:transparent;border:1px solid var(--line);color:var(--paper);font:10px 'IBM Plex Mono',monospace}
+@media(max-width:600px){.portrait-crop-backdrop{padding:8px}.portrait-crop-modal{padding:12px}.portrait-crop-preview{height:45vh}}
