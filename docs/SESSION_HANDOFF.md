@@ -86,3 +86,15 @@ W trakcie poprzedniej sesji utworzono dodatkową gałąź `feature/location-mark
 Zaprojektować i wdrożyć brakującą kartę mechaniczną ze współczynnikami zgodnie z oryginalnym arkuszem/systemem użytkownika. W rozmowie padła propozycja osobnej zakładki KARTA MECHANICZNA wewnątrz karty postaci — wymaga potwierdzenia. Nie wymyślać listy atrybutów/umiejętności na podstawie domysłów. Najpierw odzyskać/obejrzeć oryginalną kartę źródłową, uzgodnić dokładne pola i dopiero potem audytować model bazy oraz implementować zapis. Karta ma być uniwersalna, bez odrębnych sztywnych szablonów dla gatunków nadnaturalnych.
 
 Drobne ulepszenia do rozważenia po mechanice: polskie etykiety statusów, pseudonim wyraźniej wyróżniony, powiększanie zdjęć, możliwość dodawania przynależności z karty; relacje zostawić modułowi Powiązania.
+
+
+## Karta mechaniczna i redesign postaci — 26.11.2026
+- Przeniesiono portret do prawej kolumny, zmniejszono go i dodano kliknięcie do powiększenia.
+- W lewej kolumnie pozostają opisowe informacje, biografia, organizacje, galeria i notatki MG.
+- Nowy komponent `components/MechanicalSheet.tsx` zawiera Atrybuty, Umiejętności i trzy listy Atuty/Wady/Moce.
+- Atrybuty: 9 pozycji w 3 grupach, wartości 0–5 ustawiane kliknięciem.
+- Umiejętności: 3 grupy po 8 pozycji, wartości 0–5. Nazwy umiejętności w obecnej implementacji to standardowa lista robocza i wymagają porównania z polską kartą źródłową użytkownika.
+- Atuty, Wady i Moce: niezależne listy dowolnych wpisów; nazwa, opcjonalna wartość i opis, dodawanie/usuwanie.
+- Supabase: dodano tabelę `character_mechanics` z JSONB dla atrybutów, umiejętności i list, kluczem character_id oraz RLS/polityką opartą o `private.is_active_gm()`; nie zmieniano innych tabel ani danych.
+- Komponent mechaniczny zapisuje przez upsert do tej tabeli.
+- Zmiany zapisano bezpośrednio na `main`; build/deployment i test zalogowanego end-to-end wymagają potwierdzenia.
