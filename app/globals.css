@@ -528,3 +528,24 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
  .character-mechanics-full .mechanic-attributes,.character-mechanics-full .mechanic-skills{grid-template-columns:1fr!important}
  .character-mechanics-full .mechanic-entry-columns{grid-template-columns:1fr!important}
 }
+
+/* Tight label-to-rating spacing: no forced distribution across card width */
+.character-mechanics-full .mechanic-row{
+ display:grid!important;
+ grid-template-columns:max-content max-content!important;
+ justify-content:start!important;
+ align-items:center!important;
+ column-gap:12px!important;
+}
+.character-mechanics-full .mechanic-row>span{
+ flex:none!important;
+ width:auto!important;
+}
+.character-mechanics-full .mechanic-dots{
+ margin:0!important;
+ gap:3px!important;
+}
+.character-mechanics-full .mechanic-dots button{
+ width:14px!important;
+ min-width:14px!important;
+}
