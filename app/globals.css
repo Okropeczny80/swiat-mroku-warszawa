@@ -755,3 +755,8 @@ small,.eyebrow,.side-caption,.field,.access,.logout,.nav-item,.primary,.secondar
 .character-mechanics-full .mechanic-entry textarea{
  font-family:'IBM Plex Sans',sans-serif;
 }
+
+/* Mechanical dots: hollow unselected, filled selected */
+.character-mechanics-full .mechanic-dots button.empty{color:#b99a69!important;opacity:.65!important}
+.character-mechanics-full .mechanic-dots button.filled{color:#b99a69!important;opacity:1!important}
+.character-mechanics-full .mechanic-dots button{font-size:18px!important;line-height:1!important}
