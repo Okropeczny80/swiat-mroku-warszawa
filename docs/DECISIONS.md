@@ -97,3 +97,9 @@ W chwili ostatniego przeglądu GitHub zwracał `main` oraz dodatkową gałąź `
 - NULL w `locations.marker_icon` oznacza wariant automatyczny i zachowuje zgodność ze starszymi rekordami.
 - Sylwetka znacznika pozostaje jednolita; ikona jest jasna, obrys zachowuje kolor kategorii, zaznaczenie ma burgundową poświatę.
 - Źródło: SVG Repo, pliki dostarczone przez użytkownika. Dokładne adresy kart i licencje poszczególnych plików pozostają do odnotowania przed publicznym rozpowszechnianiem.
+
+
+## Decyzja — moduł postaci zaakceptowany, następny moduł Frakcje (2026-11-26)
+- Użytkownik zaakceptował aktualne proporcje portretu 4:3, crop oraz galerię z dyskretnym przyciskiem usuwania 22×22 px.
+- Zachować ten wygląd i funkcjonalność bez zmian, chyba że użytkownik poprosi.
+- Kolejnym modułem do zaprojektowania jest FRAKCJE/ORGANIZACJE. Rozpocząć od audytu istniejącego kodu, tabel organizacji/członkostw, UI i powiązań z kartami postaci; nie implementować ani zmieniać schematu przed uzgodnieniem projektu.
